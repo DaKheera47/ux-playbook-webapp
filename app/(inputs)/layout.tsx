@@ -4,9 +4,7 @@ interface InputLayoutProps {
 
 export default function RootLayout({ children }: InputLayoutProps) {
   return (
-    <main className="container">
-      <h1>from layout</h1>
-
+    <main className="container flex min-h-screen items-center justify-center py-12">
       {children}
     </main>
   )
