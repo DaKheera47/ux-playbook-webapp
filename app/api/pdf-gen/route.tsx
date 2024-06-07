@@ -6,17 +6,18 @@ import { TestReactSlider } from "@/templates/TestReactSlider"
 import puppeteer from "puppeteer"
 
 export async function POST(request: Request) {
-  const { text } = await request.json()
+  const { text, num } = await request.json()
 
   const { renderToString } = await import("react-dom/server")
 
-  const html = renderToString(<TestReactSlider text={text} />)
+  const html = renderToString(
+    <TestReactSlider text={text} numberOfMeters={num} />
+  )
 
   const browser = await puppeteer.launch({
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
   })
   const page = await browser.newPage()
-  let image: Buffer | string
 
   // Read the generated Tailwind CSS
   const css = fs.readFileSync(
@@ -35,29 +36,19 @@ export async function POST(request: Request) {
 
   fs.writeFileSync("public/test.html", completeHtml)
 
-  await page.setContent(completeHtml)
+  await page.setContent(completeHtml, { waitUntil: "networkidle0" })
 
-  const content = await page.$("body")
-  if (content) {
-    image = await content.screenshot({ omitBackground: true })
-    if (!Array.isArray(image)) {
-      await browser.close()
-      return new Response(image, {
-        headers: {
-          "Content-Type": "image/png",
-        },
-      })
-    } else {
-      await browser.close()
-      return new Response("Error", {
-        status: 500,
-      })
-    }
-  }
+  const pdf = await page.pdf({
+    format: "A4",
+    printBackground: true,
+  })
 
-  return new Response(html, {
+  await browser.close()
+
+  return new Response(pdf, {
     headers: {
-      "Content-Type": "text/html; charset=utf-8",
+      "Content-Type": "application/pdf",
+      "Content-Disposition": "attachment; filename=test.pdf",
     },
   })
 }

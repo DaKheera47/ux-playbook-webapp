@@ -1,28 +1,39 @@
-import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
+import fs from "fs"
+import path from "path"
 
-export function TestReactSlider({ text }: { text: string }) {
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+
+export function TestReactSlider({
+  text,
+  numberOfMeters,
+}: {
+  text: string
+  numberOfMeters: number
+}) {
+  const imagePath = path.resolve(process.cwd(), "public/smiley-o-meter.jpg")
+  const imageData = fs.readFileSync(imagePath)
+  const base64Image = `data:image/jpeg;base64,${imageData.toString("base64")}`
+
   return (
     <Card className="w-[350px]">
       <CardHeader>
-        <CardTitle>Create project</CardTitle>
-        <CardDescription>Deploy your new project in one-click.</CardDescription>
+        <CardTitle>{text}</CardTitle>
       </CardHeader>
+
       <CardContent>
-        <h1>{text}</h1>
+        <p className="text-muted-foreground">
+          Showing {numberOfMeters} smiley-o-meters
+        </p>
+
+        {Array.from({ length: numberOfMeters }).map((_, index) => (
+          <img
+            key={index}
+            src={base64Image}
+            alt="Smiley o meter"
+            className="my-4 rounded-lg"
+          />
+        ))}
       </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button variant="outline">Cancel</Button>
-        <Button>Deploy</Button>
-      </CardFooter>
     </Card>
   )
 }
