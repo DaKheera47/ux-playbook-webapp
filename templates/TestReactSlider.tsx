@@ -1,18 +1,18 @@
-import fs from "fs"
-import path from "path"
+import fs from "fs";
+import path from "path";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function TestReactSlider({
   text,
   numberOfMeters,
 }: {
-  text: string
-  numberOfMeters: number
+  text: string;
+  numberOfMeters: number;
 }) {
-  const imagePath = path.resolve(process.cwd(), "public/smiley-o-meter.jpg")
-  const imageData = fs.readFileSync(imagePath)
-  const base64Image = `data:image/jpeg;base64,${imageData.toString("base64")}`
+  const imagePath = path.resolve(process.cwd(), "public/smiley-o-meter.jpg");
+  const imageData = fs.readFileSync(imagePath);
+  const base64Image = `data:image/jpeg;base64,${imageData.toString("base64")}`;
 
   return (
     <Card className="w-[350px]">
@@ -35,5 +35,5 @@ export function TestReactSlider({
         ))}
       </CardContent>
     </Card>
-  )
+  );
 }

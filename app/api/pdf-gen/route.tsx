@@ -1,29 +1,29 @@
-"use server"
+"use server";
 
-import fs from "fs"
-import path from "path"
-import { TestReactSlider } from "@/templates/TestReactSlider"
-import puppeteer from "puppeteer"
+import fs from "fs";
+import path from "path";
+import { TestReactSlider } from "@/templates/TestReactSlider";
+import puppeteer from "puppeteer";
 
 export async function POST(request: Request) {
-  const { text, num } = await request.json()
+  const { text, num } = await request.json();
 
-  const { renderToString } = await import("react-dom/server")
+  const { renderToString } = await import("react-dom/server");
 
   const html = renderToString(
     <TestReactSlider text={text} numberOfMeters={num} />
-  )
+  );
 
   const browser = await puppeteer.launch({
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
-  })
-  const page = await browser.newPage()
+  });
+  const page = await browser.newPage();
 
   // Read the generated Tailwind CSS
   const css = fs.readFileSync(
     path.resolve(process.cwd(), "public/tailwind.css"),
     "utf8"
-  )
+  );
 
   const completeHtml = `
       <html>
@@ -32,23 +32,23 @@ export async function POST(request: Request) {
         </head>
         <body class="inter">${html}</body>
       </html>
-    `
+    `;
 
-  fs.writeFileSync("public/test.html", completeHtml)
+  fs.writeFileSync("public/test.html", completeHtml);
 
-  await page.setContent(completeHtml, { waitUntil: "networkidle0" })
+  await page.setContent(completeHtml, { waitUntil: "networkidle0" });
 
   const pdf = await page.pdf({
     format: "A4",
     printBackground: true,
-  })
+  });
 
-  await browser.close()
+  await browser.close();
 
   return new Response(pdf, {
     headers: {
       "Content-Type": "application/pdf",
       "Content-Disposition": "attachment; filename=test.pdf",
     },
-  })
+  });
 }

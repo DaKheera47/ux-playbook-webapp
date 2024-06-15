@@ -1,5 +1,5 @@
 interface InputLayoutProps {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 export default function RootLayout({ children }: InputLayoutProps) {
@@ -7,5 +7,5 @@ export default function RootLayout({ children }: InputLayoutProps) {
     <main className="container flex min-h-screen items-center justify-center py-12">
       {children}
     </main>
-  )
+  );
 }

@@ -1,17 +1,17 @@
-"use client"
+"use client";
 
-import React, { useState } from "react"
+import { useState } from "react";
 
-import { Button, buttonVariants } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Slider } from "@/components/ui/slider"
+import { Button, buttonVariants } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Slider } from "@/components/ui/slider";
 
-type Props = {}
+type Props = {};
 
 export default function SmileyPage({}: Props) {
-  const [inputText, setInputText] = useState("")
-  const [num, setNum] = useState(3)
-  const [pdfUrl, setPdfUrl] = useState<string | null>(null)
+  const [inputText, setInputText] = useState("");
+  const [num, setNum] = useState(3);
+  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
   const handleGeneratePDF = () => {
     fetch("/api/pdf-gen", {
@@ -25,12 +25,12 @@ export default function SmileyPage({}: Props) {
       .then((blob) => {
         // Revoke the previous object URL if it exists
         if (pdfUrl) {
-          URL.revokeObjectURL(pdfUrl)
+          URL.revokeObjectURL(pdfUrl);
         }
-        const url = URL.createObjectURL(blob)
-        setPdfUrl(url)
-      })
-  }
+        const url = URL.createObjectURL(blob);
+        setPdfUrl(url);
+      });
+  };
 
   return (
     <div className="flex w-96 flex-col justify-center space-y-8">
@@ -69,5 +69,5 @@ export default function SmileyPage({}: Props) {
         )}
       </div>
     </div>
-  )
+  );
 }

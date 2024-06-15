@@ -1,8 +1,8 @@
-import Link from "next/link"
+import Link from "next/link";
 
-import { siteConfig } from "@/config/site"
-import { buttonVariants } from "@/components/ui/button"
-import { SiteHeader } from "@/components/site-header"
+import { siteConfig } from "@/config/site";
+import { buttonVariants } from "@/components/ui/button";
+import { SiteHeader } from "@/components/site-header";
 
 export default function IndexPage() {
   return (
@@ -35,5 +35,5 @@ export default function IndexPage() {
         </div>
       </section>
     </>
-  )
+  );
 }
