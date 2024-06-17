@@ -1,12 +1,13 @@
+"use client";
+
 import React, { useState } from "react";
 import { $isLandscape, $questions } from "@/stores/pdfOptions";
 import { useStore } from "@nanostores/react";
 
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
-import { Input } from "./ui/input";
-import { Switch } from "./ui/switch";
+import { Switch } from "@/components/ui/switch";
 
 type Props = {};
 

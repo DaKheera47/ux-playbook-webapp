@@ -11,19 +11,17 @@ export default function RenderPreview({}: Props) {
   const isLandscape = useStore($isLandscape);
 
   return (
-    <>
-      <div className="w-3/5 flex-grow">
-        <h1>RENDER PREVIEW</h1>
+    <div className="w-3/5 flex-grow">
+      <h1>RENDER PREVIEW</h1>
 
-        <PDFViewer className="min-h-[80vh] w-full">
-          <TextQuestion
-            heading="List of questions"
-            questions={questions}
-            smileyImage={smileyImage.src}
-            landscape={isLandscape}
-          />
-        </PDFViewer>
-      </div>
-    </>
+      <PDFViewer className="min-h-[80vh] w-full">
+        <TextQuestion
+          heading="List of questions"
+          questions={questions}
+          smileyImage={smileyImage.src}
+          landscape={isLandscape}
+        />
+      </PDFViewer>
+    </div>
   );
 }

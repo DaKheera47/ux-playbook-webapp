@@ -1,10 +1,4 @@
-"use client";
-
-import { useState } from "react";
 import dynamic from "next/dynamic";
-import smileyImage from "@/public/smiley-o-meter.jpg";
-import { TextQuestion } from "@/templates/TextQuestion";
-import { PDFViewer } from "@react-pdf/renderer";
 
 const OptionsMenu = dynamic(() => import("@/components/OptionsMenu"));
 
