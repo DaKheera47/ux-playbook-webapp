@@ -1,7 +1,7 @@
-// store/users.ts
+// store/pdfOptions.ts
 import { atom } from "nanostores";
 
-export const $questions = atom<IQuestion[]>([]);
+export const $questions = atom<IQuestion[]>([{ text: "What is your name?" }]);
 
 export const $isLandscape = atom<boolean>(false);
 
