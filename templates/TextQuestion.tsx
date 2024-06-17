@@ -16,7 +16,7 @@ export function TextQuestion({
   const questionHeight = 297 / numQuestions;
 
   return (
-    <Card className="w-[210mm]">
+    <Card className="w-[210mm] overflow-x-hidden">
       <CardHeader>
         <CardTitle>{heading}</CardTitle>
       </CardHeader>
@@ -26,7 +26,7 @@ export function TextQuestion({
           return (
             <div
               key={idx}
-              className="border-b border-red-500"
+              className="!max-h-[150px] rounded-md border border-red-500"
               style={{
                 height: `${questionHeight}mm`,
                 pageBreakInside: "avoid",
@@ -37,7 +37,7 @@ export function TextQuestion({
               <img
                 src={smileyImage}
                 alt="Smiley o meter"
-                className="my-4 h-3/5 w-full rounded-lg object-contain"
+                className="h-3/5 rounded-lg object-contain"
               />
             </div>
           );
