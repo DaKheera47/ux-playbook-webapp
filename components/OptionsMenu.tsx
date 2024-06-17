@@ -1,12 +1,24 @@
 "use client";
 
 import React, { useState } from "react";
-import { $isLandscape, $numberOfUsers, $questions } from "@/stores/pdfOptions";
+import {
+  $isLandscape,
+  $numberOfUsers,
+  $questions,
+  $ratingType,
+} from "@/stores/pdfOptions";
 import { useStore } from "@nanostores/react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 
 import QuestionPreview from "./QuestionPreview";
@@ -19,6 +31,7 @@ export default function OptionsMenu({}: Props) {
   const questions = useStore($questions);
   const isLandscape = useStore($isLandscape);
   const numberOfUsers = useStore($numberOfUsers);
+  const ratingType = useStore($ratingType);
 
   const handleAddQuestion = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -78,6 +91,24 @@ export default function OptionsMenu({}: Props) {
           onChange={(e) => $numberOfUsers.set(e.target.valueAsNumber)}
         />
       </div>
+
+      <div>
+        <Select
+          value={ratingType}
+          onValueChange={(value) => $ratingType.set(value as IRatingType)}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Rating Type" />
+          </SelectTrigger>
+
+          <SelectContent>
+            <SelectItem value="words">Words</SelectItem>
+            <SelectItem value="smilies">Smiley-o-Meter</SelectItem>
+            <SelectItem value="thumbs">Thumbs Ups</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
       <div
         onClick={() => $isLandscape.set(!isLandscape)}
         className="flex w-full items-center justify-between hover:cursor-pointer"

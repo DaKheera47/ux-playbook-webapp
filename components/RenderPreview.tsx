@@ -1,7 +1,9 @@
 "use client";
 
 import smileyImage from "@/public/smiley-o-meter.jpg";
-import { $isLandscape, $questions } from "@/stores/pdfOptions";
+import thumbsImage from "@/public/thumbs.jpg";
+import wordsImage from "@/public/words.jpg";
+import { $isLandscape, $questions, $ratingType } from "@/stores/pdfOptions";
 import { TextQuestion } from "@/templates/TextQuestion";
 import { TextQuestionTable } from "@/templates/TextQuestionTable";
 import { useStore } from "@nanostores/react";
@@ -14,12 +16,19 @@ type Props = {};
 export default function RenderPreview({}: Props) {
   const questions = useStore($questions);
   const isLandscape = useStore($isLandscape);
+  const ratingType = useStore($ratingType);
+
+  const selectedImage = {
+    smilies: smileyImage,
+    thumbs: thumbsImage,
+    words: wordsImage,
+  }[ratingType];
 
   return (
     <div className="w-3/5 flex-grow">
       <Tabs defaultValue="table">
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="table">Table</TabsTrigger>
+          <TabsTrigger value="table">Table View</TabsTrigger>
 
           <TabsTrigger value="question-then-smiley">
             Question Then Smiley
@@ -31,7 +40,7 @@ export default function RenderPreview({}: Props) {
             <TextQuestionTable
               heading="List of questions"
               questions={questions}
-              smileyImage={smileyImage.src}
+              smileyImage={selectedImage.src}
               landscape={isLandscape}
             />
           </PDFViewer>
@@ -42,7 +51,7 @@ export default function RenderPreview({}: Props) {
             <TextQuestion
               heading="List of questions"
               questions={questions}
-              smileyImage={smileyImage.src}
+              smileyImage={selectedImage.src}
               landscape={isLandscape}
             />
           </PDFViewer>
