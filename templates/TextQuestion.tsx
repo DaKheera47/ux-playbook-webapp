@@ -1,48 +1,86 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import React from "react";
+import {
+  Document,
+  Font,
+  Image,
+  Page,
+  StyleSheet,
+  Text,
+  View,
+} from "@react-pdf/renderer";
 
-export function TextQuestion({
-  heading,
-  questions,
-  smileyImage,
-}: {
+// TODO: Register fonts here
+// https://react-pdf.org/fonts
+// Font.register({
+//   family: "Poppins",
+//   fonts: [
+//     {
+//       src: "https://github.com/google/fonts/raw/main/ofl/poppins/Poppins-Regular.ttf/",
+//     },
+//     {
+//       src: "https://github.com/google/fonts/raw/main/ofl/poppins/Poppins-Bold.ttf/",
+//       fontWeight: 700,
+//     },
+//   ],
+// });
+
+// Create styles
+const styles = StyleSheet.create({
+  page: {
+    flexDirection: "row",
+  },
+  section: {
+    margin: 10,
+    padding: 10,
+    flexGrow: 1,
+  },
+  heading: {
+    fontSize: 24,
+    fontWeight: 700,
+    marginBottom: 10,
+    textAlign: "center",
+    textTransform: "capitalize",
+  },
+  question: {
+    marginBottom: 20,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    borderBottomWidth: 1,
+    borderBottomColor: "#000",
+    borderBottomStyle: "solid",
+  },
+});
+
+interface Props {
   heading: string;
   questions: IQuestion[];
   smileyImage: string;
-}) {
-  // max height of a page can only be 297mm
-  const numQuestions = questions.length;
+}
 
-  // calculate the height of each question
-  const questionHeight = 297 / numQuestions;
+// Create Document Component
+const TextQuestion = ({ heading, questions, smileyImage }: Props) => (
+  <Document>
+    <Page size="A4" style={styles.page}>
+      <View style={styles.section}>
+        <Text style={styles.heading}>{heading}</Text>
 
-  return (
-    <Card className="w-[210mm] overflow-x-hidden">
-      <CardHeader>
-        <CardTitle>{heading}</CardTitle>
-      </CardHeader>
+        {questions.length === 0 && (
+          <Text style={{ textAlign: "center" }}>No questions added</Text>
+        )}
 
-      <CardContent>
-        {questions.map((question, idx) => {
+        {questions?.map((question, idx) => {
           return (
-            <div
-              key={idx}
-              className="!max-h-[150px] rounded-md border border-red-500"
-              style={{
-                height: `${questionHeight}mm`,
-                pageBreakInside: "avoid",
-              }}
-            >
-              <p className="text-muted-foreground">{question.text}</p>
+            <View key={idx} style={styles.question}>
+              <Text>{question.text}</Text>
 
-              <img
-                src={smileyImage}
-                alt="Smiley o meter"
-                className="h-3/5 rounded-lg object-contain"
-              />
-            </div>
+              <Image src={smileyImage} />
+            </View>
           );
         })}
-      </CardContent>
-    </Card>
-  );
-}
+      </View>
+    </Page>
+  </Document>
+);
+
+export { TextQuestion };

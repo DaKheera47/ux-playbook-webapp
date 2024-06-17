@@ -3,6 +3,7 @@
 import { useState } from "react";
 import smileyImage from "@/public/smiley-o-meter.jpg";
 import { TextQuestion } from "@/templates/TextQuestion";
+import { PDFViewer } from "@react-pdf/renderer";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -137,14 +138,16 @@ export default function SmileyPage({}: Props) {
         </div>
       </div>
 
-      <div className="max-h-[297mm] space-y-4 overflow-hidden">
+      <div className="w-3/5 flex-grow">
         <h1>RENDER PREVIEW</h1>
 
-        <TextQuestion
-          heading="List of questions"
-          questions={questions}
-          smileyImage={smileyImage.src}
-        />
+        <PDFViewer className="min-h-[80vh] w-full">
+          <TextQuestion
+            heading="List of questions"
+            questions={questions}
+            smileyImage={smileyImage.src}
+          />
+        </PDFViewer>
       </div>
     </div>
   );
