@@ -3,15 +3,26 @@
 import fs from "fs";
 import path from "path";
 import { TestReactSlider } from "@/templates/TestReactSlider";
+import { TextQuestion } from "@/templates/TextQuestion";
 import puppeteer from "puppeteer";
 
 export async function POST(request: Request) {
-  const { text, num } = await request.json();
+  const { questions } = await request.json();
+
+  console.log(questions);
 
   const { renderToString } = await import("react-dom/server");
 
+  const imagePath = path.resolve(process.cwd(), "public/smiley-o-meter.jpg");
+  const imageData = fs.readFileSync(imagePath);
+  const base64Image = `data:image/jpeg;base64,${imageData.toString("base64")}`;
+
   const html = renderToString(
-    <TestReactSlider text={text} numberOfMeters={num} />
+    <TextQuestion
+      heading="List of questions"
+      questions={questions}
+      smileyImage={base64Image}
+    />
   );
 
   const browser = await puppeteer.launch({
