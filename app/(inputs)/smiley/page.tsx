@@ -38,7 +38,7 @@ export default function SmileyPage({}: Props) {
   };
 
   return (
-    <div className="flex flex-col space-y-12">
+    <div className="flex space-x-8">
       <div className="flex w-96 flex-col justify-center space-y-8">
         <div className="space-y-4">
           <h1 className="text-xl">List of questions</h1>
@@ -118,7 +118,7 @@ export default function SmileyPage({}: Props) {
         </div>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-4 max-h-[297mm] overflow-hidden">
         <h1>RENDER PREVIEW</h1>
 
         <TextQuestion

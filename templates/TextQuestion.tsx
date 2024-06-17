@@ -9,6 +9,12 @@ export function TextQuestion({
   questions: IQuestion[];
   smileyImage: string;
 }) {
+  // max height of a page can only be 297mm
+  const numQuestions = questions.length;
+
+  // calculate the height of each question
+  const questionHeight = 297 / numQuestions;
+
   return (
     <Card className="w-[210mm]">
       <CardHeader>
@@ -18,13 +24,20 @@ export function TextQuestion({
       <CardContent>
         {questions.map((question, idx) => {
           return (
-            <div key={idx}>
+            <div
+              key={idx}
+              className="border-b border-red-500"
+              style={{
+                height: `${questionHeight}mm`,
+                pageBreakInside: "avoid",
+              }}
+            >
               <p className="text-muted-foreground">{question.text}</p>
 
               <img
                 src={smileyImage}
                 alt="Smiley o meter"
-                className="my-4 w-full rounded-lg object-contain"
+                className="my-4 h-3/5 w-full rounded-lg object-contain"
               />
             </div>
           );
