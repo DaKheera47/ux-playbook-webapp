@@ -56,31 +56,43 @@ interface Props {
   heading: string;
   questions: IQuestion[];
   smileyImage: string;
+  landscape?: boolean;
 }
 
 // Create Document Component
-const TextQuestion = ({ heading, questions, smileyImage }: Props) => (
-  <Document>
-    <Page size="A4" style={styles.page}>
-      <View style={styles.section}>
-        <Text style={styles.heading}>{heading}</Text>
+const TextQuestion = ({
+  heading,
+  questions,
+  smileyImage,
+  landscape,
+}: Props) => {
+  return (
+    <Document>
+      <Page
+        size="A4"
+        style={styles.page}
+        orientation={landscape ? "landscape" : "portrait"}
+      >
+        <View style={styles.section}>
+          <Text style={styles.heading}>{heading}</Text>
 
-        {questions.length === 0 && (
-          <Text style={{ textAlign: "center" }}>No questions added</Text>
-        )}
+          {questions.length === 0 && (
+            <Text style={{ textAlign: "center" }}>No questions added</Text>
+          )}
 
-        {questions?.map((question, idx) => {
-          return (
-            <View key={idx} style={styles.question}>
-              <Text>{question.text}</Text>
+          {questions?.map((question, idx) => {
+            return (
+              <View key={idx} style={styles.question} wrap={false}>
+                <Text>{question.text}</Text>
 
-              <Image src={smileyImage} />
-            </View>
-          );
-        })}
-      </View>
-    </Page>
-  </Document>
-);
+                <Image src={smileyImage} />
+              </View>
+            );
+          })}
+        </View>
+      </Page>
+    </Document>
+  );
+};
 
 export { TextQuestion };

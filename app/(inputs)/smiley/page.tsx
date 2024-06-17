@@ -7,36 +7,17 @@ import { PDFViewer } from "@react-pdf/renderer";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
+import { Switch } from "@/components/ui/switch";
 
 type Props = {};
 
 export default function SmileyPage({}: Props) {
   const [inputText, setInputText] = useState("");
-  const [num, setNum] = useState(3);
-  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const [questions, setQuestions] = useState<IQuestion[]>([]);
   const [editIndex, setEditIndex] = useState<number | null>(null);
-
-  const handleGeneratePDF = () => {
-    setPdfUrl(null);
-
-    fetch("/api/pdf-gen", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ text: inputText, num, questions }),
-    })
-      .then((res) => res.blob())
-      .then((blob) => {
-        if (pdfUrl) {
-          URL.revokeObjectURL(pdfUrl);
-        }
-        const url = URL.createObjectURL(blob);
-        setPdfUrl(url);
-      });
-  };
+  const [isLandscape, setIsLandscape] = useState(false);
 
   const handleAddQuestion = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -112,29 +93,15 @@ export default function SmileyPage({}: Props) {
           </form>
         </div>
 
-        <div className="space-y-4">
-          <h1>Smiley-o-meters: {num}</h1>
-          <Slider
-            min={1}
-            max={5}
-            step={1}
-            value={[num]}
-            onValueChange={(e) => setNum(Number(e[0]))}
-          />
-        </div>
-
-        <div className="flex w-full justify-between">
-          <Button onClick={handleGeneratePDF}>Generate PDF</Button>
-
-          {pdfUrl && (
-            <a
-              href={pdfUrl}
-              download="generated.pdf"
-              className={buttonVariants()}
-            >
-              Download PDF
-            </a>
-          )}
+        <div
+          onClick={() => {
+            console.log("isLandscape", isLandscape);
+            setIsLandscape((prev) => !prev);
+          }}
+          className="flex w-full items-center justify-between hover:cursor-pointer"
+        >
+          <Label htmlFor="landscape">Landscape</Label>
+          <Switch checked={isLandscape} id="landscape" />
         </div>
       </div>
 
@@ -146,6 +113,7 @@ export default function SmileyPage({}: Props) {
             heading="List of questions"
             questions={questions}
             smileyImage={smileyImage.src}
+            landscape={isLandscape}
           />
         </PDFViewer>
       </div>
