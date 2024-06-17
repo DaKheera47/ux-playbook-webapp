@@ -1,3 +1,5 @@
+"use client";
+
 import smileyImage from "@/public/smiley-o-meter.jpg";
 import { $isLandscape, $questions } from "@/stores/pdfOptions";
 import { TextQuestion } from "@/templates/TextQuestion";

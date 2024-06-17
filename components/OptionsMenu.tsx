@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { $isLandscape, $questions } from "@/stores/pdfOptions";
+import { $isLandscape, $numberOfUsers, $questions } from "@/stores/pdfOptions";
 import { useStore } from "@nanostores/react";
 
 import { Button } from "@/components/ui/button";
@@ -9,88 +9,75 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 
+import QuestionPreview from "./QuestionPreview";
+
 type Props = {};
 
 export default function OptionsMenu({}: Props) {
-  const [inputText, setInputText] = useState("");
+  const [questionText, setQuestionText] = useState("");
+  const [editQuestionIdx, setQuestionIdx] = useState<number | null>(null);
   const questions = useStore($questions);
   const isLandscape = useStore($isLandscape);
-  const [editIndex, setEditIndex] = useState<number | null>(null);
+  const numberOfUsers = useStore($numberOfUsers);
 
   const handleAddQuestion = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (editIndex !== null) {
+
+    if (editQuestionIdx !== null) {
       const updatedQuestions = [...questions];
-      updatedQuestions[editIndex] = { text: inputText };
+      updatedQuestions[editQuestionIdx] = { text: questionText };
       $questions.set(updatedQuestions);
-      setEditIndex(null);
+      setQuestionIdx(null);
     } else {
-      $questions.set([...questions, { text: inputText }]);
+      $questions.set([...questions, { text: questionText }]);
     }
-    setInputText("");
+    setQuestionText("");
   };
 
   const handleEditQuestion = (index: number) => {
-    setInputText(questions[index].text);
-    setEditIndex(index);
-  };
-
-  const handleDeleteQuestion = (index: number) => {
-    const updatedQuestions = questions.filter((_, i) => i !== index);
-    $questions.set(updatedQuestions);
+    setQuestionText(questions[index].text);
+    setQuestionIdx(index);
   };
 
   return (
     <div className="flex w-2/5 flex-col justify-center space-y-8">
-      <div className="space-y-4">
-        <h1 className="text-xl">List of questions</h1>
+      <QuestionPreview handleEditQuestion={handleEditQuestion} />
 
-        <div>
-          {questions.map((question, index) => (
-            <div
-              key={index + question.text}
-              className="my-2 flex w-full items-center justify-between space-x-4 border-b border-b-gray-300 p-2"
-            >
-              <p>{question.text}</p>
-
-              <p>{question?.description}</p>
-
-              <div className="flex space-x-2">
-                <Button
-                  variant="link"
-                  onClick={() => handleEditQuestion(index)}
-                >
-                  Edit
-                </Button>
-
-                <Button
-                  variant="destructive"
-                  onClick={() => handleDeleteQuestion(index)}
-                >
-                  Delete
-                </Button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="space-y-2">
-        <h1>{editIndex !== null ? "Edit Question" : "Add Questions"}</h1>
+      <div>
+        <Label className="text-xl" htmlFor="question">
+          {editQuestionIdx !== null ? "Edit Question" : "Add Questions"}
+        </Label>
 
         <form onSubmit={handleAddQuestion} className="flex space-x-2">
           <Input
             type="text"
+            id="question"
             required
             placeholder="Add your questions here"
-            value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
+            value={questionText}
+            onChange={(e) => setQuestionText(e.target.value)}
           />
 
-          <Button type="submit">{editIndex !== null ? "Save" : "Add"}</Button>
+          <Button type="submit">
+            {editQuestionIdx !== null ? "Save" : "Add"}
+          </Button>
         </form>
       </div>
 
+      <div>
+        <Label className="text-xl" htmlFor="users">
+          Number of users
+        </Label>
+
+        <Input
+          type="number"
+          id="users"
+          required
+          placeholder="Number of users"
+          value={numberOfUsers}
+          onChange={(e) => $numberOfUsers.set(e.target.valueAsNumber)}
+        />
+      </div>
       <div
         onClick={() => $isLandscape.set(!isLandscape)}
         className="flex w-full items-center justify-between hover:cursor-pointer"
