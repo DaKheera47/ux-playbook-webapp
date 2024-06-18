@@ -43,7 +43,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           fontSans.variable
         )}
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ThemeProvider attribute="class" forcedTheme="light" enableSystem>
           <div className="relative flex min-h-screen flex-col">
             <div className="flex-1">{children}</div>
           </div>
