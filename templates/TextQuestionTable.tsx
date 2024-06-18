@@ -67,37 +67,35 @@ const TextQuestionTable = ({
             <Text style={{ textAlign: "center" }}>No questions added</Text>
           )}
 
-          {questions?.map((question, idx) => {
-            return (
-              <View
-                key={idx}
+          {questions?.map((question, idx) => (
+            <View
+              key={idx}
+              wrap={false}
+              style={[
+                styles.question,
+                {
+                  // border width only if last question to avoid double border
+                  borderBottomWidth: idx === questions.length - 1 ? 1 : 0,
+                },
+              ]}
+            >
+              <Text style={[styles.col, {}]}>{question.text}</Text>
+
+              <Image
                 style={[
-                  styles.question,
+                  styles.col,
                   {
-                    // border width only if last question to avoid double border
-                    borderBottomWidth: idx === questions.length - 1 ? 1 : 0,
+                    width: "50%",
+                    paddingLeft: "10px",
+                    borderLeftWidth: "1px",
+                    borderLeftColor: "#000",
+                    borderLeftStyle: "solid",
                   },
                 ]}
-                wrap={false}
-              >
-                <Text style={[styles.col, {}]}>{question.text}</Text>
-
-                <Image
-                  style={[
-                    styles.col,
-                    {
-                      width: "50%",
-                      paddingLeft: "10px",
-                      borderLeftWidth: "1px",
-                      borderLeftColor: "#000",
-                      borderLeftStyle: "solid",
-                    },
-                  ]}
-                  src={smileyImage}
-                />
-              </View>
-            );
-          })}
+                src={smileyImage}
+              />
+            </View>
+          ))}
         </View>
       </Page>
     </Document>
