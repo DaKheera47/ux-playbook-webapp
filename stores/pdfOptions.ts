@@ -8,3 +8,5 @@ export const $isLandscape = atom<boolean>(false);
 export const $numberOfUsers = atom<number>(0);
 
 export const $ratingType = atom<IRatingType>("smilies");
+
+export const $showIntroduction = atom<boolean>(true);

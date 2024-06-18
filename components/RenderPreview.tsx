@@ -3,7 +3,12 @@
 import smileyImage from "@/public/smiley-o-meter.jpg";
 import thumbsImage from "@/public/thumbs.jpg";
 import wordsImage from "@/public/words.jpg";
-import { $isLandscape, $questions, $ratingType } from "@/stores/pdfOptions";
+import {
+  $isLandscape,
+  $questions,
+  $ratingType,
+  $showIntroduction,
+} from "@/stores/pdfOptions";
 import { TextQuestion } from "@/templates/TextQuestion";
 import { TextQuestionTable } from "@/templates/TextQuestionTable";
 import { useStore } from "@nanostores/react";
@@ -17,6 +22,7 @@ export default function RenderPreview({}: Props) {
   const questions = useStore($questions);
   const isLandscape = useStore($isLandscape);
   const ratingType = useStore($ratingType);
+  const showIntroduction = useStore($showIntroduction);
 
   const selectedImage = {
     smilies: smileyImage,
@@ -42,6 +48,7 @@ export default function RenderPreview({}: Props) {
               questions={questions}
               smileyImage={selectedImage.src}
               landscape={isLandscape}
+              showIntroduction={showIntroduction}
             />
           </PDFViewer>
         </TabsContent>

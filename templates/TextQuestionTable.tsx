@@ -1,3 +1,5 @@
+import { $showIntroduction } from "@/stores/pdfOptions";
+import { useStore } from "@nanostores/react";
 import {
   Document,
   Image,
@@ -7,15 +9,18 @@ import {
   View,
 } from "@react-pdf/renderer";
 
+import { ParticipantIntroduction } from "./ParticipantIntroduction";
+
 // Create styles
 const styles = StyleSheet.create({
   page: {
-    flexDirection: "row",
+    display: "flex",
+    flexDirection: "column",
+    fontSize: 16,
   },
   section: {
     margin: 10,
     padding: 10,
-    flexGrow: 1,
   },
   heading: {
     fontSize: 24,
@@ -44,6 +49,7 @@ interface Props {
   questions: IQuestion[];
   smileyImage: string;
   landscape?: boolean;
+  showIntroduction?: boolean;
 }
 
 // Create Document Component
@@ -52,6 +58,7 @@ const TextQuestionTable = ({
   questions,
   smileyImage,
   landscape,
+  showIntroduction = true,
 }: Props) => {
   return (
     <Document>
@@ -61,41 +68,47 @@ const TextQuestionTable = ({
         orientation={landscape ? "landscape" : "portrait"}
       >
         <View style={styles.section}>
-          <Text style={styles.heading}>{heading}</Text>
-
-          {questions.length === 0 && (
-            <Text style={{ textAlign: "center" }}>No questions added</Text>
+          {showIntroduction && (
+            <ParticipantIntroduction questions={questions} />
           )}
 
-          {questions?.map((question, idx) => (
-            <View
-              key={idx}
-              wrap={false}
-              style={[
-                styles.question,
-                {
-                  // border width only if last question to avoid double border
-                  borderBottomWidth: idx === questions.length - 1 ? 1 : 0,
-                },
-              ]}
-            >
-              <Text style={[styles.col, {}]}>{question.text}</Text>
+          {questions.length === 0 ? (
+            <Text style={{ textAlign: "center" }}>No questions added</Text>
+          ) : (
+            <>
+              <Text style={styles.heading}>{heading}</Text>
 
-              <Image
-                style={[
-                  styles.col,
-                  {
-                    width: "50%",
-                    paddingLeft: "10px",
-                    borderLeftWidth: "1px",
-                    borderLeftColor: "#000",
-                    borderLeftStyle: "solid",
-                  },
-                ]}
-                src={smileyImage}
-              />
-            </View>
-          ))}
+              {questions?.map((question, idx) => (
+                <View
+                  key={idx}
+                  wrap={false}
+                  style={[
+                    styles.question,
+                    {
+                      // border width only if last question to avoid double border
+                      borderBottomWidth: idx === questions.length - 1 ? 1 : 0,
+                    },
+                  ]}
+                >
+                  <Text style={[styles.col, {}]}>{question.text}</Text>
+
+                  <Image
+                    style={[
+                      styles.col,
+                      {
+                        width: "50%",
+                        paddingLeft: "10px",
+                        borderLeftWidth: "1px",
+                        borderLeftColor: "#000",
+                        borderLeftStyle: "solid",
+                      },
+                    ]}
+                    src={smileyImage}
+                  />
+                </View>
+              ))}
+            </>
+          )}
         </View>
       </Page>
     </Document>

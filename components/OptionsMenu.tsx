@@ -6,6 +6,7 @@ import {
   $numberOfUsers,
   $questions,
   $ratingType,
+  $showIntroduction,
 } from "@/stores/pdfOptions";
 import { useStore } from "@nanostores/react";
 
@@ -32,6 +33,7 @@ export default function OptionsMenu({}: Props) {
   const isLandscape = useStore($isLandscape);
   const numberOfUsers = useStore($numberOfUsers);
   const ratingType = useStore($ratingType);
+  const showIntroduction = useStore($showIntroduction);
 
   const handleAddQuestion = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -109,12 +111,22 @@ export default function OptionsMenu({}: Props) {
         </Select>
       </div>
 
-      <div
-        onClick={() => $isLandscape.set(!isLandscape)}
-        className="flex w-full items-center justify-between hover:cursor-pointer"
-      >
-        <Label htmlFor="landscape">Landscape</Label>
-        <Switch checked={isLandscape} id="landscape" />
+      <div className="space-y-2">
+        <div
+          onClick={() => $isLandscape.set(!isLandscape)}
+          className="flex w-full items-center justify-between hover:cursor-pointer"
+        >
+          <Label htmlFor="landscape">Landscape</Label>
+          <Switch checked={isLandscape} id="landscape" />
+        </div>
+
+        <div
+          onClick={() => $showIntroduction.set(!showIntroduction)}
+          className="flex w-full items-center justify-between hover:cursor-pointer"
+        >
+          <Label htmlFor="show-introduction">Show Introduction</Label>
+          <Switch checked={showIntroduction} id="show-introduction" />
+        </div>
       </div>
     </div>
   );
