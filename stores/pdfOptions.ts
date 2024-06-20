@@ -2,10 +2,13 @@
 import { atom } from "nanostores";
 
 export const $questions = atom<IQuestion[]>([
-  { text: "Example Base Question" },
+  { text: "Example Base Question", description: "Base Example Description" },
 ]);
 export const $introductionQuestions = atom<IQuestion[]>([
-  { text: "Example Introduction Question" },
+  {
+    text: "Example Introduction Question",
+    description: "Introduction Example Description",
+  },
 ]);
 
 export const $isLandscape = atom<boolean>(false);

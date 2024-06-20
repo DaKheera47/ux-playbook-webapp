@@ -38,6 +38,11 @@ const styles = StyleSheet.create({
     borderColor: "#000",
     borderStyle: "solid",
   },
+  description: {
+    fontSize: 12,
+    marginTop: 5,
+    color: "#777",
+  },
   col: {
     width: "50%",
     padding: 10,
@@ -92,7 +97,12 @@ const TextQuestionTable = ({
                     },
                   ]}
                 >
-                  <Text style={[styles.col, {}]}>{question.text}</Text>
+                  <View style={[styles.col, {}]}>
+                    <Text>{question.text}</Text>
+                    <Text style={styles.description}>
+                      {question.description}
+                    </Text>
+                  </View>
 
                   <Image
                     style={[
