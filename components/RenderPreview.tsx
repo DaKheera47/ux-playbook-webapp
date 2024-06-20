@@ -4,6 +4,7 @@ import smileyImage from "@/public/smiley-o-meter.jpg";
 import thumbsImage from "@/public/thumbs.jpg";
 import wordsImage from "@/public/words.jpg";
 import {
+  $introductionQuestions,
   $isLandscape,
   $questions,
   $ratingType,
@@ -19,7 +20,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 type Props = {};
 
 export default function RenderPreview({}: Props) {
-  const questions = useStore($questions);
+  const baseQuestions = useStore($questions);
+  const introductionQuestions = useStore($introductionQuestions);
+
   const isLandscape = useStore($isLandscape);
   const ratingType = useStore($ratingType);
   const showIntroduction = useStore($showIntroduction);
@@ -45,7 +48,8 @@ export default function RenderPreview({}: Props) {
           <PDFViewer className="min-h-[80vh] w-full">
             <TextQuestionTable
               heading="List of questions"
-              questions={questions}
+              introductionQuestions={introductionQuestions}
+              questions={baseQuestions}
               smileyImage={selectedImage.src}
               landscape={isLandscape}
               showIntroduction={showIntroduction}
@@ -57,7 +61,7 @@ export default function RenderPreview({}: Props) {
           <PDFViewer className="min-h-[80vh] w-full">
             <TextQuestion
               heading="List of questions"
-              questions={questions}
+              questions={baseQuestions}
               smileyImage={selectedImage.src}
               landscape={isLandscape}
             />

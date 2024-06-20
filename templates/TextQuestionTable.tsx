@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
 interface Props {
   heading: string;
   questions: IQuestion[];
+  introductionQuestions?: IQuestion[];
   smileyImage: string;
   landscape?: boolean;
   showIntroduction?: boolean;
@@ -56,6 +57,7 @@ interface Props {
 const TextQuestionTable = ({
   heading,
   questions,
+  introductionQuestions = [],
   smileyImage,
   landscape,
   showIntroduction = true,
@@ -69,7 +71,7 @@ const TextQuestionTable = ({
       >
         <View style={styles.section}>
           {showIntroduction && (
-            <ParticipantIntroduction questions={questions} />
+            <ParticipantIntroduction questions={introductionQuestions} />
           )}
 
           {questions.length === 0 ? (

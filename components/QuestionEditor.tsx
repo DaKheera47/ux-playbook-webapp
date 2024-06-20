@@ -1,28 +1,41 @@
 import { useState } from "react";
-import { $questions } from "@/stores/pdfOptions";
+import { $introductionQuestions, $questions } from "@/stores/pdfOptions";
 import { useStore } from "@nanostores/react";
 
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogClose,
   DialogContent,
   DialogDescription,
+  DialogFooter,
+  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-import { DialogFooter, DialogHeader } from "./ui/dialog";
-
 type Props = {
   question: IQuestion;
   type?: "add" | "edit";
+  questionType?: "introduction" | "base";
 };
 
-export default function QuestionEditor({ question, type }: Props) {
-  const questions = useStore($questions);
+export default function QuestionEditor({
+  question,
+  type,
+  questionType,
+}: Props) {
+  const baseQuestions = useStore($questions);
+  const introductionQuestions = useStore($introductionQuestions);
+
+  const $questionsList =
+    questionType === "base" ? $questions : $introductionQuestions;
+  const questions =
+    questionType === "base" ? baseQuestions : introductionQuestions;
+
   const [editingQuestion, setEditingQuestion] = useState<IQuestion>({
     text: question.text,
     description: question.description,
@@ -30,13 +43,19 @@ export default function QuestionEditor({ question, type }: Props) {
 
   const handleDeleteQuestion = (index: number) => {
     const updatedQuestions = questions.filter((_, i) => i !== index);
-    $questions.set(updatedQuestions);
+    $questionsList.set(updatedQuestions);
   };
 
   const handleEditQuestion = (question: IQuestion, index: number) => {
+    if (index === -1) {
+      // append new question
+      $questionsList.set([...questions, question]);
+      return;
+    }
+
     const updatedQuestions = [...questions];
     updatedQuestions[index] = question;
-    $questions.set(updatedQuestions);
+    $questionsList.set(updatedQuestions);
   };
 
   const index = questions.findIndex(
@@ -51,7 +70,7 @@ export default function QuestionEditor({ question, type }: Props) {
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>Add or Edit Question</DialogTitle>
 
@@ -69,13 +88,13 @@ export default function QuestionEditor({ question, type }: Props) {
             <Input
               id="text"
               value={editingQuestion?.text}
+              className="col-span-3"
               onChange={(e) =>
                 setEditingQuestion({
                   text: e.target.value,
                   description: editingQuestion?.description,
                 })
               }
-              className="col-span-3"
             />
           </div>
 
@@ -87,24 +106,32 @@ export default function QuestionEditor({ question, type }: Props) {
             <Input
               id="description"
               value={editingQuestion?.description ?? ""}
+              className="col-span-3"
               onChange={(e) =>
                 setEditingQuestion({
                   text: editingQuestion?.text ?? "",
                   description: e.target.value,
                 })
               }
-              className="col-span-3"
             />
           </div>
         </div>
 
-        <DialogFooter className="flex w-full flex-row sm:justify-between">
-          <Button
-            variant="destructive"
-            onClick={() => handleDeleteQuestion(index)}
-          >
-            Delete
-          </Button>
+        <DialogFooter
+          className={cn("flex w-full flex-row sm:justify-between", {
+            "sm:justify-end": type === "add",
+          })}
+        >
+          {type !== "add" && (
+            <DialogClose asChild>
+              <Button
+                variant="destructive"
+                onClick={() => handleDeleteQuestion(index)}
+              >
+                Delete
+              </Button>
+            </DialogClose>
+          )}
 
           <DialogClose asChild>
             <Button

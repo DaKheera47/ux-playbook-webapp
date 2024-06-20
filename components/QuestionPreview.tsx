@@ -1,27 +1,45 @@
-import { $questions } from "@/stores/pdfOptions";
+import { $introductionQuestions, $questions } from "@/stores/pdfOptions";
 import { useStore } from "@nanostores/react";
 
 import { Label } from "@/components/ui/label";
 
 import QuestionEditor from "./QuestionEditor";
 
-type Props = {};
+type Props = {
+  type: "introduction" | "base";
+};
 
-export default function QuestionPreview({}: Props) {
+export default function QuestionPreview({ type }: Props) {
   const questions = useStore($questions);
+  const introductionQuestions = useStore($introductionQuestions);
+
+  let questionsToDisplay = type === "base" ? questions : introductionQuestions;
 
   return (
     <div className="space-y-2">
-      <span className="text-xl font-medium capitalize">List of questions</span>
+      <span className="text-xl font-medium capitalize">
+        {type === "introduction" ? "Introduction" : "Base"} Questions
+      </span>
 
       <div className="space-y-2">
-        {questions.map((question, index) => (
-          <QuestionEditor key={index} type="edit" question={question} />
+        {questionsToDisplay.map((question, index) => (
+          <QuestionEditor
+            key={index}
+            questionType={type}
+            type="edit"
+            question={question}
+          />
         ))}
 
-        {questions.length === 0 && <Label>No questions added yet</Label>}
+        {questionsToDisplay.length === 0 && (
+          <Label>No questions added yet</Label>
+        )}
 
-        <QuestionEditor type="add" question={{ text: "Add a New Question" }} />
+        <QuestionEditor
+          questionType={type}
+          type="add"
+          question={{ text: "Add a New Question" }}
+        />
       </div>
     </div>
   );
