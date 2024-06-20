@@ -1,48 +1,27 @@
 import { $questions } from "@/stores/pdfOptions";
 import { useStore } from "@nanostores/react";
 
-import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 
-type Props = {
-  handleEditQuestion: (index: number) => void;
-};
+import QuestionEditor from "./QuestionEditor";
 
-export default function QuestionPreview({ handleEditQuestion }: Props) {
+type Props = {};
+
+export default function QuestionPreview({}: Props) {
   const questions = useStore($questions);
 
-  const handleDeleteQuestion = (index: number) => {
-    const updatedQuestions = questions.filter((_, i) => i !== index);
-    $questions.set(updatedQuestions);
-  };
-
   return (
-    <div className="space-y-4">
-      <Label className="text-xl">List of questions</Label>
+    <div className="space-y-2">
+      <span className="text-xl font-medium capitalize">List of questions</span>
 
-      <div>
+      <div className="space-y-2">
         {questions.map((question, index) => (
-          <div
-            key={index + question.text}
-            className="my-2 flex w-full items-center justify-between space-x-4 border-b border-b-gray-300 p-2"
-          >
-            <p>{question.text}</p>
-            <p>{question?.description}</p>
-
-            <div className="flex space-x-2">
-              <Button variant="link" onClick={() => handleEditQuestion(index)}>
-                Edit
-              </Button>
-
-              <Button
-                variant="destructive"
-                onClick={() => handleDeleteQuestion(index)}
-              >
-                Delete
-              </Button>
-            </div>
-          </div>
+          <QuestionEditor key={index} type="edit" question={question} />
         ))}
+
+        {questions.length === 0 && <Label>No questions added yet</Label>}
+
+        <QuestionEditor type="add" question={{ text: "Add a New Question" }} />
       </div>
     </div>
   );

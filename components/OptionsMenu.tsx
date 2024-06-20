@@ -49,40 +49,12 @@ export default function OptionsMenu({}: Props) {
     setQuestionText("");
   };
 
-  const handleEditQuestion = (index: number) => {
-    setQuestionText(questions[index].text);
-    setQuestionIdx(index);
-  };
-
   return (
-    <div className="flex w-2/5 flex-col justify-center space-y-8">
-      <QuestionPreview handleEditQuestion={handleEditQuestion} />
+    <div className="flex min-h-screen w-2/5 flex-col justify-center space-y-4 overflow-y-scroll px-2">
+      <QuestionPreview />
 
       <div>
-        <Label className="text-xl" htmlFor="question">
-          {editQuestionIdx !== null ? "Edit Question" : "Add Questions"}
-        </Label>
-
-        <form onSubmit={handleAddQuestion} className="flex space-x-2">
-          <Input
-            type="text"
-            id="question"
-            required
-            placeholder="Add your questions here"
-            value={questionText}
-            onChange={(e) => setQuestionText(e.target.value)}
-          />
-
-          <Button type="submit">
-            {editQuestionIdx !== null ? "Save" : "Add"}
-          </Button>
-        </form>
-      </div>
-
-      <div>
-        <Label className="text-xl" htmlFor="users">
-          Number of users
-        </Label>
+        <Label htmlFor="users">Number of users</Label>
 
         <Input
           type="number"
@@ -95,6 +67,8 @@ export default function OptionsMenu({}: Props) {
       </div>
 
       <div>
+        <Label htmlFor="rating-type">Rating Type</Label>
+
         <Select
           value={ratingType}
           onValueChange={(value) => $ratingType.set(value as IRatingType)}
@@ -103,7 +77,7 @@ export default function OptionsMenu({}: Props) {
             <SelectValue placeholder="Rating Type" />
           </SelectTrigger>
 
-          <SelectContent>
+          <SelectContent id="rating-type">
             <SelectItem value="words">Words</SelectItem>
             <SelectItem value="smilies">Smiley-o-Meter</SelectItem>
             <SelectItem value="thumbs">Thumbs Ups</SelectItem>

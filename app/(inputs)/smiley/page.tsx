@@ -11,7 +11,7 @@ type Props = {};
 
 export default function SmileyPage({}: Props) {
   return (
-    <div className="flex w-full space-x-8">
+    <div className="flex w-full space-x-8 h-screen">
       <OptionsMenu />
       <RenderPreview />
     </div>
