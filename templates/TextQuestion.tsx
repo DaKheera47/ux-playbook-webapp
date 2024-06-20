@@ -50,6 +50,11 @@ const styles = StyleSheet.create({
     borderBottomColor: "#000",
     borderBottomStyle: "solid",
   },
+  description: {
+    fontSize: 12,
+    marginTop: 5,
+    color: "#777",
+  },
 });
 
 interface Props {
@@ -83,7 +88,10 @@ const TextQuestion = ({
           {questions?.map((question, idx) => {
             return (
               <View key={idx} style={styles.question} wrap={false}>
-                <Text>{question.text}</Text>
+                <View>
+                  <Text>{question.text}</Text>
+                  <Text style={styles.description}>{question.description}</Text>
+                </View>
 
                 <Image src={smileyImage} />
               </View>
