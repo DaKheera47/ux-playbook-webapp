@@ -17,10 +17,6 @@ export default function QuestionPreview({ type }: Props) {
 
   return (
     <div className="space-y-2">
-      <span className="text-xl font-medium capitalize">
-        {type === "introduction" ? "Introduction" : "Base"} Questions
-      </span>
-
       <div className="space-y-2">
         {questionsToDisplay.map((question, index) => (
           <QuestionEditor

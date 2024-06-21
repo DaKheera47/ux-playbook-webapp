@@ -64,7 +64,7 @@ export default function QuestionEditor({
 
   return (
     <Dialog>
-      <DialogTrigger asChild className="w-full justify-start">
+      <DialogTrigger asChild className="w-full justify-start bg-white">
         <Button variant={type === "add" ? "link" : "outline"}>
           {question.text}
         </Button>

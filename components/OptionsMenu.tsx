@@ -3,6 +3,8 @@
 import {
   $isLandscape,
   $numberOfUsers,
+  $randomizeAlgorithm,
+  $randomizeQuestions,
   $ratingType,
   $showIntroduction,
 } from "@/stores/pdfOptions";
@@ -29,12 +31,16 @@ export default function OptionsMenu({}: Props) {
   const numberOfUsers = useStore($numberOfUsers);
   const ratingType = useStore($ratingType);
   const showIntroduction = useStore($showIntroduction);
+  const randomizeQuestions = useStore($randomizeQuestions);
+  const randomizeAlgorithm = useStore($randomizeAlgorithm);
 
   return (
-    <div className="flex min-h-screen w-2/5 flex-col justify-center space-y-4 overflow-y-scroll px-2">
-      <QuestionPreview type="base" />
+    <div className="flex min-h-screen w-2/5 flex-col space-y-4 overflow-y-scroll px-4 py-12">
+      <div className="space-y-2 rounded border bg-gray-50 p-4">
+        <QuestionPreview type="base" />
+      </div>
 
-      <div>
+      <div className="space-y-2 rounded border bg-gray-50 p-4">
         <Label htmlFor="users">Number of users</Label>
 
         <Input
@@ -48,7 +54,7 @@ export default function OptionsMenu({}: Props) {
         />
       </div>
 
-      <div>
+      <div className="space-y-2 rounded border bg-gray-50 p-4">
         <Label htmlFor="rating-type">Rating Type</Label>
 
         <Select
@@ -67,16 +73,54 @@ export default function OptionsMenu({}: Props) {
         </Select>
       </div>
 
-      <div className="space-y-2">
+      <div className="space-y-4">
         <div
           onClick={() => $isLandscape.set(!isLandscape)}
-          className="flex w-full items-center justify-between hover:cursor-pointer"
+          className="flex w-full items-center justify-between rounded border bg-gray-50 p-4 hover:cursor-pointer"
         >
           <Label htmlFor="landscape">Landscape</Label>
           <Switch checked={isLandscape} id="landscape" />
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-4 rounded border bg-gray-50 p-4">
+          <div
+            onClick={() => $randomizeQuestions.set(!randomizeQuestions)}
+            className="flex w-full items-center justify-between hover:cursor-pointer"
+          >
+            <Label htmlFor="randomize-questions">
+              Randomize Questions in PDF Set
+            </Label>
+            <Switch checked={randomizeQuestions} id="randomize-questions" />
+          </div>
+
+          {randomizeQuestions && (
+            <div className="space-y-0">
+              <Label htmlFor="randomize-algorithm">
+                Randomization Algorithm
+              </Label>
+
+              <Select
+                onValueChange={(value) =>
+                  $randomizeAlgorithm.set(value as IRandomizeAlgorithm)
+                }
+                value={randomizeAlgorithm}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Randomization Algorithm" />
+                </SelectTrigger>
+
+                <SelectContent id="randomize-algorithm">
+                  <SelectItem value="linear-down">
+                    Linearly Shift Down
+                  </SelectItem>
+                  <SelectItem value="random">Completely Randomized</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+        </div>
+
+        <div className="space-y-4 rounded border bg-gray-50 p-4">
           <div
             onClick={() => $showIntroduction.set(!showIntroduction)}
             className="flex w-full items-center justify-between hover:cursor-pointer"
