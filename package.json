@@ -27,6 +27,8 @@
     "@react-email/components": "0.0.19",
     "@react-email/render": "0.0.15",
     "@react-pdf/renderer": "^3.4.4",
+    "@types/archiver": "^6.0.2",
+    "archiver": "^7.0.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "lucide-react": "0.390.0",

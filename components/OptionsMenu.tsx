@@ -111,7 +111,7 @@ export default function OptionsMenu({}: Props) {
 
                 <SelectContent id="randomize-algorithm">
                   <SelectItem value="linear-down">
-                    Linearly Shift Down
+                    Linear Shift
                   </SelectItem>
                   <SelectItem value="random">Completely Randomized</SelectItem>
                 </SelectContent>

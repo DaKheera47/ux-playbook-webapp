@@ -5,6 +5,8 @@ import {
   $isLandscape,
   $numberOfUsers,
   $questions,
+  $randomizeAlgorithm,
+  $randomizeQuestions,
   $ratingType,
   $showIntroduction,
 } from "@/stores/pdfOptions";
@@ -22,6 +24,8 @@ export default function GeneratePDFSet({}: Props) {
   const ratingType = useStore($ratingType);
   const showIntroduction = useStore($showIntroduction);
   const isLandscape = useStore($isLandscape);
+  const randomizeQuestions = useStore($randomizeQuestions);
+  const randomizeAlgorithm = useStore($randomizeAlgorithm);
 
   if (typeof document === "undefined") {
     return null;
@@ -48,27 +52,21 @@ export default function GeneratePDFSet({}: Props) {
         numUsers,
         ratingType,
         showIntroduction,
+        randomizeQuestions,
+        randomizeAlgorithm,
         layout: isLandscape ? "landscape" : "portrait",
       }),
     }).then((res) => {
       if (res.ok) {
         res.blob().then((blob) => {
-          console.log("Received PDF blob", blob);
           const url = URL.createObjectURL(blob);
-          console.log("URL", url);
 
           a.href = url;
           console.log(a);
-          a.download = "pdf-set.pdf";
+          a.download = "pdf-set.zip";
 
           // click to download
           a.click();
-
-          //   // free up memory
-          //   URL.revokeObjectURL(url);
-
-          // remove from DOM
-          //   document.body.removeChild(a);
         });
       }
     });
@@ -77,7 +75,7 @@ export default function GeneratePDFSet({}: Props) {
   return (
     <div>
       <Button onClick={handleGeneratePDFSet} className="w-full">
-        Generate PDF Set
+        Generate PDF Set for {numUsers} {numUsers > 1 ? "users" : "user"}
       </Button>
     </div>
   );
