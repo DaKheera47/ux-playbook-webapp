@@ -1,13 +1,13 @@
-import React from "react";
 import {
   Document,
-  Font,
   Image,
   Page,
   StyleSheet,
   Text,
   View,
 } from "@react-pdf/renderer";
+
+import { ParticipantIntroduction } from "./ParticipantIntroduction";
 
 // TODO: Register fonts here
 // https://react-pdf.org/fonts
@@ -27,12 +27,13 @@ import {
 // Create styles
 const styles = StyleSheet.create({
   page: {
-    flexDirection: "row",
+    display: "flex",
+    flexDirection: "column",
+    fontSize: 16,
   },
   section: {
     margin: 10,
     padding: 10,
-    flexGrow: 1,
   },
   heading: {
     fontSize: 24,
@@ -53,6 +54,7 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 12,
     marginTop: 5,
+    marginBottom: 5,
     color: "#777",
   },
 });
@@ -60,6 +62,8 @@ const styles = StyleSheet.create({
 interface Props {
   heading: string;
   questions: IQuestion[];
+  introductionQuestions: IQuestion[];
+  showIntroduction: boolean;
   smileyImage: string;
   landscape?: boolean;
 }
@@ -68,6 +72,8 @@ interface Props {
 const TextQuestion = ({
   heading,
   questions,
+  introductionQuestions,
+  showIntroduction,
   smileyImage,
   landscape,
 }: Props) => {
@@ -78,6 +84,10 @@ const TextQuestion = ({
         style={styles.page}
         orientation={landscape ? "landscape" : "portrait"}
       >
+        {showIntroduction && (
+          <ParticipantIntroduction questions={introductionQuestions} />
+        )}
+
         <View style={styles.section}>
           <Text style={styles.heading}>{heading}</Text>
 

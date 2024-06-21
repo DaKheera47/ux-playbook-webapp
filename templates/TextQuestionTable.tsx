@@ -74,11 +74,11 @@ const TextQuestionTable = ({
         style={styles.page}
         orientation={landscape ? "landscape" : "portrait"}
       >
-        <View style={styles.section}>
-          {showIntroduction && (
-            <ParticipantIntroduction questions={introductionQuestions} />
-          )}
+        {showIntroduction && (
+          <ParticipantIntroduction questions={introductionQuestions} />
+        )}
 
+        <View style={styles.section}>
           {questions.length === 0 ? (
             <Text style={{ textAlign: "center" }}>No questions added</Text>
           ) : (

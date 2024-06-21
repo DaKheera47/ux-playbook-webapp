@@ -69,6 +69,8 @@ export default function RenderPreview({}: Props) {
             <TextQuestion
               heading="List of questions"
               questions={baseQuestions}
+              introductionQuestions={introductionQuestions}
+              showIntroduction={showIntroduction}
               smileyImage={selectedImage.src}
               landscape={isLandscape}
             />
