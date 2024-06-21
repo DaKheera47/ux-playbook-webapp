@@ -104,22 +104,37 @@ export async function POST(request: Request) {
   }
 
   const pdfBuffers = [];
+  // Cache to store rendered PDF buffers to avoid re-rendering
+  const pdfCache = new Map();
 
   for (let i = 0; i < numUsers; i++) {
     const questions = randomizeQuestions
       ? performRandomization(baseQuestions, randomizeAlgorithm, i)
       : baseQuestions;
 
-    const pdfBuffer = await renderToBuffer(
-      <TextQuestionTable
-        heading="List of questions"
-        introductionQuestions={introductionQuestions}
-        questions={questions}
-        smileyImage={base64Image ?? ""}
-        landscape={layout === "landscape"}
-        showIntroduction={showIntroduction}
-      />
-    );
+    // Serialize the questions for caching
+    const questionsKey = JSON.stringify(questions);
+
+    let pdfBuffer;
+
+    if (pdfCache.has(questionsKey)) {
+      // Retrieve from cache if possible
+      pdfBuffer = pdfCache.get(questionsKey);
+    } else {
+      pdfBuffer = await renderToBuffer(
+        <TextQuestionTable
+          heading="List of questions"
+          introductionQuestions={introductionQuestions}
+          questions={questions}
+          smileyImage={base64Image ?? ""}
+          landscape={layout === "landscape"}
+          showIntroduction={showIntroduction}
+        />
+      );
+
+      // Store in cache for future use
+      pdfCache.set(questionsKey, pdfBuffer);
+    }
 
     pdfBuffers.push(pdfBuffer);
   }
