@@ -107,39 +107,25 @@ export async function POST(request: Request) {
   }
 
   const pdfBuffers = [];
-  // Cache to store rendered PDF buffers to avoid re-rendering
-  const pdfCache = new Map();
 
   for (let i = 0; i < numUsers; i++) {
     const questions = randomizeQuestions
       ? performRandomization(baseQuestions, randomizeAlgorithm, i)
       : baseQuestions;
 
-    // Serialize the questions for caching
-    const questionsKey = JSON.stringify(questions);
+    const Component = layout === "table" ? TextQuestionTable : TextQuestion;
 
-    let pdfBuffer;
-
-    if (pdfCache.has(questionsKey)) {
-      // Retrieve from cache if possible
-      pdfBuffer = pdfCache.get(questionsKey);
-    } else {
-      const Component = layout === "table" ? TextQuestionTable : TextQuestion;
-
-      pdfBuffer = await renderToBuffer(
-        <Component
-          heading="List of questions"
-          introductionQuestions={introductionQuestions}
-          questions={questions}
-          smileyImage={base64Image ?? ""}
-          landscape={isLandscape}
-          showIntroduction={showIntroduction}
-        />
-      );
-
-      // Store in cache for future use
-      pdfCache.set(questionsKey, pdfBuffer);
-    }
+    let pdfBuffer = await renderToBuffer(
+      <Component
+        heading="List of questions"
+        introductionQuestions={introductionQuestions}
+        questions={questions}
+        smileyImage={base64Image ?? ""}
+        landscape={isLandscape}
+        showIntroduction={showIntroduction}
+        fileId={`${i + 1}`}
+      />
+    );
 
     pdfBuffers.push(pdfBuffer);
   }
