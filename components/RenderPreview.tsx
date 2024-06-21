@@ -36,7 +36,7 @@ export default function RenderPreview({}: Props) {
   }[ratingType];
 
   return (
-    <div className="w-3/5 flex-grow">
+    <div className="flex h-screen w-3/5 flex-grow flex-col space-y-4 overflow-y-scroll px-4 py-12">
       <Tabs value={layout}>
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="table" onClick={() => $layout.set("table")}>
@@ -52,7 +52,7 @@ export default function RenderPreview({}: Props) {
         </TabsList>
 
         <TabsContent value="table">
-          <PDFViewer className="min-h-[80vh] w-full">
+          <PDFViewer className="h-[calc(100vh-8rem)] w-full rounded">
             <TextQuestionTable
               heading="List of questions"
               introductionQuestions={introductionQuestions}
@@ -65,7 +65,7 @@ export default function RenderPreview({}: Props) {
         </TabsContent>
 
         <TabsContent value="question-then-smiley">
-          <PDFViewer className="min-h-[80vh] w-full">
+          <PDFViewer className="h-[calc(100vh-8rem)] w-full rounded">
             <TextQuestion
               heading="List of questions"
               questions={baseQuestions}
