@@ -2,6 +2,7 @@
 
 import fs from "fs";
 import path from "path";
+import { TextQuestion } from "@/templates/TextQuestion";
 import { TextQuestionTable } from "@/templates/TextQuestionTable";
 import { renderToBuffer } from "@react-pdf/renderer";
 import archiver from "archiver";
@@ -51,8 +52,9 @@ interface RequestBody {
   numUsers: number;
   ratingType: IRatingType;
   showIntroduction: boolean;
-  layout: "landscape" | "portrait";
+  layout: ILayout;
   randomizeQuestions: boolean;
+  isLandscape: boolean;
   randomizeAlgorithm: IRandomizeAlgorithm;
 }
 
@@ -69,6 +71,7 @@ export async function POST(request: Request) {
     layout,
     randomizeQuestions,
     randomizeAlgorithm,
+    isLandscape,
   } = body;
 
   console.log(
@@ -121,13 +124,15 @@ export async function POST(request: Request) {
       // Retrieve from cache if possible
       pdfBuffer = pdfCache.get(questionsKey);
     } else {
+      const Component = layout === "table" ? TextQuestionTable : TextQuestion;
+
       pdfBuffer = await renderToBuffer(
-        <TextQuestionTable
+        <Component
           heading="List of questions"
           introductionQuestions={introductionQuestions}
           questions={questions}
           smileyImage={base64Image ?? ""}
-          landscape={layout === "landscape"}
+          landscape={isLandscape}
           showIntroduction={showIntroduction}
         />
       );

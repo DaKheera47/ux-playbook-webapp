@@ -6,6 +6,7 @@ import wordsImage from "@/public/words.jpg";
 import {
   $introductionQuestions,
   $isLandscape,
+  $layout,
   $questions,
   $ratingType,
   $showIntroduction,
@@ -26,6 +27,7 @@ export default function RenderPreview({}: Props) {
   const isLandscape = useStore($isLandscape);
   const ratingType = useStore($ratingType);
   const showIntroduction = useStore($showIntroduction);
+  const layout = useStore($layout);
 
   const selectedImage = {
     smilies: smileyImage,
@@ -35,11 +37,16 @@ export default function RenderPreview({}: Props) {
 
   return (
     <div className="w-3/5 flex-grow">
-      <Tabs defaultValue="table">
+      <Tabs value={layout}>
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="table">Table View</TabsTrigger>
+          <TabsTrigger value="table" onClick={() => $layout.set("table")}>
+            Table View
+          </TabsTrigger>
 
-          <TabsTrigger value="question-then-smiley">
+          <TabsTrigger
+            value="question-then-smiley"
+            onClick={() => $layout.set("question-then-smiley")}
+          >
             Question Then Smiley
           </TabsTrigger>
         </TabsList>

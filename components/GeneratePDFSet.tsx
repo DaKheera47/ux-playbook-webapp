@@ -3,6 +3,7 @@
 import {
   $introductionQuestions,
   $isLandscape,
+  $layout,
   $numberOfUsers,
   $questions,
   $randomizeAlgorithm,
@@ -26,6 +27,7 @@ export default function GeneratePDFSet({}: Props) {
   const isLandscape = useStore($isLandscape);
   const randomizeQuestions = useStore($randomizeQuestions);
   const randomizeAlgorithm = useStore($randomizeAlgorithm);
+  const layout = useStore($layout);
 
   if (typeof document === "undefined") {
     return null;
@@ -54,7 +56,8 @@ export default function GeneratePDFSet({}: Props) {
         showIntroduction,
         randomizeQuestions,
         randomizeAlgorithm,
-        layout: isLandscape ? "landscape" : "portrait",
+        isLandscape,
+        layout,
       }),
     }).then((res) => {
       if (res.ok) {

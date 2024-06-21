@@ -22,3 +22,5 @@ export const $showIntroduction = atom<boolean>(true);
 export const $randomizeQuestions = atom<boolean>(true);
 
 export const $randomizeAlgorithm = atom<IRandomizeAlgorithm>("random");
+
+export const $layout = atom<ILayout>("table");
