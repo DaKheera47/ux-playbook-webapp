@@ -2,61 +2,88 @@
 
 import fs from "fs";
 import path from "path";
-import { TestReactSlider } from "@/templates/TestReactSlider";
-import { TextQuestion } from "@/templates/TextQuestion";
-import puppeteer from "puppeteer";
+import { TextQuestionTable } from "@/templates/TextQuestionTable";
+import { renderToBuffer } from "@react-pdf/renderer";
+
+function getBase64Image(ratingType: IRatingType) {
+  let fileName;
+
+  switch (ratingType) {
+    case "smilies":
+      fileName = "smiley-o-meter.jpg";
+      break;
+    case "thumbs":
+      fileName = "thumbs.jpg";
+      break;
+    case "words":
+      fileName = "words.jpg";
+      break;
+    default:
+      throw new Error("Invalid rating type");
+  }
+
+  const imagePath = path.resolve(process.cwd(), "public", fileName);
+  const imageData = fs.readFileSync(imagePath);
+  return `data:image/jpeg;base64,${imageData.toString("base64")}`;
+}
+
+interface RequestBody {
+  baseQuestions: IQuestion[];
+  introductionQuestions: IQuestion[];
+  numUsers: number;
+  ratingType: IRatingType;
+  showIntroduction: boolean;
+  layout: "landscape" | "portrait";
+}
 
 export async function POST(request: Request) {
-  const { questions } = await request.json();
+  // Parse the JSON body
+  const body: RequestBody = (await request.json()) as RequestBody;
 
-  console.log(questions);
+  const {
+    baseQuestions,
+    introductionQuestions,
+    numUsers,
+    ratingType,
+    showIntroduction,
+    layout,
+  } = body;
 
-  const { renderToString } = await import("react-dom/server");
+  console.log(
+    baseQuestions,
+    introductionQuestions,
+    numUsers,
+    ratingType,
+    showIntroduction,
+    layout
+  );
 
-  const imagePath = path.resolve(process.cwd(), "public/smiley-o-meter.jpg");
-  const imageData = fs.readFileSync(imagePath);
-  const base64Image = `data:image/jpeg;base64,${imageData.toString("base64")}`;
+  let base64Image;
 
-  const html = renderToString(
-    <TextQuestion
+  try {
+    base64Image = getBase64Image(ratingType);
+  } catch (error: any) {
+    console.error(error.message);
+  }
+
+  const pdfBuffer = await renderToBuffer(
+    <TextQuestionTable
       heading="List of questions"
-      questions={questions}
-      smileyImage={base64Image}
+      introductionQuestions={introductionQuestions}
+      questions={baseQuestions}
+      smileyImage={base64Image ?? ""}
+      landscape={layout === "landscape"}
+      showIntroduction={showIntroduction}
     />
   );
 
-  const browser = await puppeteer.launch({
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
-  });
-  const page = await browser.newPage();
+  // to make a pdf set, we need to make as many pdfs as there are users
+  // combine them into a zip file
+  // and then download the zip file
+  // in each pdf, the pdf number should be displayed
+  // the pdf's base questions should be randomized
 
-  // Read the generated Tailwind CSS
-  const css = fs.readFileSync(
-    path.resolve(process.cwd(), "public/tailwind.css"),
-    "utf8"
-  );
-
-  const completeHtml = `
-      <html>
-        <head>
-          <style>${css}</style>
-        </head>
-        <body class="inter">${html}</body>
-      </html>
-    `;
-
-  fs.writeFileSync("public/test.html", completeHtml);
-
-  await page.setContent(completeHtml, { waitUntil: "networkidle0" });
-
-  const pdf = await page.pdf({
-    format: "A4",
-    printBackground: true,
-  });
-
-  await browser.close();
-
-  return new Response(pdf, {
+  return new Response(pdfBuffer, {
     headers: {
       "Content-Type": "application/pdf",
       "Content-Disposition": "attachment; filename=test.pdf",

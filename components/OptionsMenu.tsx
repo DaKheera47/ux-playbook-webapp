@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 
+import GeneratePDFSet from "./GeneratePDFSet";
 import QuestionPreview from "./QuestionPreview";
 
 type Props = {};
@@ -87,6 +88,8 @@ export default function OptionsMenu({}: Props) {
           {showIntroduction && <QuestionPreview type="introduction" />}
         </div>
       </div>
+
+      <GeneratePDFSet />
     </div>
   );
 }
