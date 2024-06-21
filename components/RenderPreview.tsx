@@ -52,7 +52,7 @@ export default function RenderPreview({}: Props) {
         </TabsList>
 
         <TabsContent value="table">
-          <PDFViewer className="h-[calc(100vh-8rem)] w-full rounded">
+          <PDFViewer className="h-[calc(100vh-9rem)] w-full rounded">
             <TextQuestionTable
               heading="List of questions"
               introductionQuestions={introductionQuestions}
@@ -60,12 +60,13 @@ export default function RenderPreview({}: Props) {
               smileyImage={selectedImage.src}
               landscape={isLandscape}
               showIntroduction={showIntroduction}
+              fileId="1"
             />
           </PDFViewer>
         </TabsContent>
 
         <TabsContent value="question-then-smiley">
-          <PDFViewer className="h-[calc(100vh-8rem)] w-full rounded">
+          <PDFViewer className="h-[calc(100vh-9rem)] w-full rounded">
             <TextQuestion
               heading="List of questions"
               questions={baseQuestions}
@@ -73,6 +74,7 @@ export default function RenderPreview({}: Props) {
               showIntroduction={showIntroduction}
               smileyImage={selectedImage.src}
               landscape={isLandscape}
+              fileId="1"
             />
           </PDFViewer>
         </TabsContent>

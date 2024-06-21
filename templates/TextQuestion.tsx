@@ -57,6 +57,15 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     color: "#777",
   },
+  fileId: {
+    position: "absolute",
+    padding: 5,
+    color: "#777",
+    top: 10,
+    zIndex: 100,
+    right: 10,
+    fontSize: 10,
+  },
 });
 
 interface Props {
@@ -66,6 +75,7 @@ interface Props {
   showIntroduction: boolean;
   smileyImage: string;
   landscape?: boolean;
+  fileId: string;
 }
 
 // Create Document Component
@@ -76,6 +86,7 @@ const TextQuestion = ({
   showIntroduction,
   smileyImage,
   landscape,
+  fileId,
 }: Props) => {
   return (
     <Document>
@@ -84,6 +95,10 @@ const TextQuestion = ({
         style={styles.page}
         orientation={landscape ? "landscape" : "portrait"}
       >
+        <View fixed style={styles.fileId}>
+          <Text>File {fileId}</Text>
+        </View>
+
         {showIntroduction && (
           <ParticipantIntroduction questions={introductionQuestions} />
         )}
