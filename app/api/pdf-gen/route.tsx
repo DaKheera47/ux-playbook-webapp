@@ -93,15 +93,20 @@ export async function POST(request: Request) {
   }
 
   const pdfBuffers = [];
+  const base64Buffer = {
+    smilies: getBase64Image("smilies"),
+    thumbs: getBase64Image("thumbs"),
+    words: getBase64Image("words"),
+  };
 
   for (let i = 0; i < numUsers; i++) {
     const questions = randomizeQuestions
       ? performRandomization(baseQuestions, randomizeAlgorithm, i)
       : baseQuestions;
 
-    const base64Data = questions.map((question) =>
-      getBase64Image(question.ratingType)
-    );
+    const base64Data = questions.map((question) => {
+      return base64Buffer[question.ratingType];
+    });
 
     const Component = layout === "table" ? TextQuestionTable : TextQuestion;
 
