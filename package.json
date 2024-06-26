@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev --turbo",
     "build:css": "npx tailwindcss -i styles/globals.css -o public/tailwind.css -c  tailwind.config.js --postcss postcss.config.js --minify",
-    "build": "npm run build:css && next build",
+    "build": "next build",
     "css:help": "tailwindcss -h",
     "start": "next start",
     "lint": "next lint",
