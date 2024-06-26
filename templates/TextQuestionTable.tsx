@@ -60,8 +60,8 @@ const styles = StyleSheet.create({
 
 interface Props {
   heading: string;
-  questions: IQuestion[];
-  introductionQuestions?: IQuestion[];
+  questions: IBaseQuestion[];
+  introductionQuestions?: IBaseQuestion[];
   smileyImage: string;
   landscape?: boolean;
   showIntroduction?: boolean;

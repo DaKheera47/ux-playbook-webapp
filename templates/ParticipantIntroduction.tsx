@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 });
 
 interface Props {
-  questions: IQuestion[];
+  questions: IBaseQuestion[];
 }
 
 // Create Document Component

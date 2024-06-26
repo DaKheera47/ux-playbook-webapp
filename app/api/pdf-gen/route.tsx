@@ -47,8 +47,8 @@ function performRandomization<T>(
 }
 
 interface RequestBody {
-  baseQuestions: IQuestion[];
-  introductionQuestions: IQuestion[];
+  baseQuestions: IBaseQuestion[];
+  introductionQuestions: IBaseQuestion[];
   numUsers: number;
   ratingType: IRatingType;
   showIntroduction: boolean;

@@ -34,7 +34,7 @@ export default function QuestionPreview({ type }: Props) {
         <QuestionEditor
           questionType={type}
           type="add"
-          question={{ text: "Add a New Question" }}
+          question={{ text: "Add a New Question", ratingType: "smilies" }}
         />
       </div>
     </div>

@@ -1,6 +1,11 @@
-interface IQuestion {
+interface IBaseQuestion {
   text: string;
   description?: string;
+  ratingType: IRatingType;
+}
+
+interface IIntroductionQuestion {
+  text: string;
 }
 
 type IRatingType = "smilies" | "thumbs" | "words";
