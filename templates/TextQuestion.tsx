@@ -78,6 +78,7 @@ interface Props {
   showIntroduction: boolean;
   landscape?: boolean;
   fileId: string;
+  imageBase64Data?: string[];
 }
 
 // Create Document Component
@@ -88,7 +89,16 @@ const TextQuestion = ({
   showIntroduction,
   landscape,
   fileId,
+  imageBase64Data,
 }: Props) => {
+  const getImageSrc = (question: IBaseQuestion) => {
+    return question.ratingType === "smilies"
+      ? smileyImage.src
+      : question.ratingType === "thumbs"
+        ? thumbsImage.src
+        : wordsImage.src;
+  };
+
   return (
     <Document>
       <Page
@@ -121,11 +131,9 @@ const TextQuestion = ({
 
                 <Image
                   src={
-                    question.ratingType === "smilies"
-                      ? smileyImage.src
-                      : question.ratingType === "thumbs"
-                        ? thumbsImage.src
-                        : wordsImage.src
+                    imageBase64Data
+                      ? imageBase64Data[idx]
+                      : getImageSrc(question)
                   }
                 />
               </View>
