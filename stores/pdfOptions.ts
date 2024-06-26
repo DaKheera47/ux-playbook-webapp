@@ -19,8 +19,6 @@ export const $isLandscape = atom<boolean>(false);
 
 export const $numberOfUsers = atom<number>(1);
 
-export const $ratingType = atom<IRatingType>("smilies");
-
 export const $showIntroduction = atom<boolean>(true);
 
 export const $randomizeQuestions = atom<boolean>(true);

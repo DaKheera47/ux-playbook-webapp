@@ -8,7 +8,6 @@ import {
   $questions,
   $randomizeAlgorithm,
   $randomizeQuestions,
-  $ratingType,
   $showIntroduction,
 } from "@/stores/pdfOptions";
 import { useStore } from "@nanostores/react";
@@ -22,7 +21,6 @@ export default function GeneratePDFSet({}: Props) {
   const introductionQuestions = useStore($introductionQuestions);
 
   const numUsers = useStore($numberOfUsers);
-  const ratingType = useStore($ratingType);
   const showIntroduction = useStore($showIntroduction);
   const isLandscape = useStore($isLandscape);
   const randomizeQuestions = useStore($randomizeQuestions);
@@ -52,7 +50,6 @@ export default function GeneratePDFSet({}: Props) {
         baseQuestions,
         introductionQuestions,
         numUsers,
-        ratingType,
         showIntroduction,
         randomizeQuestions,
         randomizeAlgorithm,

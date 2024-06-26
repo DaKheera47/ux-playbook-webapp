@@ -5,7 +5,6 @@ import {
   $numberOfUsers,
   $randomizeAlgorithm,
   $randomizeQuestions,
-  $ratingType,
   $showIntroduction,
 } from "@/stores/pdfOptions";
 import { useStore } from "@nanostores/react";
@@ -29,7 +28,6 @@ type Props = {};
 export default function OptionsMenu({}: Props) {
   const isLandscape = useStore($isLandscape);
   const numberOfUsers = useStore($numberOfUsers);
-  const ratingType = useStore($ratingType);
   const showIntroduction = useStore($showIntroduction);
   const randomizeQuestions = useStore($randomizeQuestions);
   const randomizeAlgorithm = useStore($randomizeAlgorithm);
@@ -52,25 +50,6 @@ export default function OptionsMenu({}: Props) {
           min={1}
           onChange={(e) => $numberOfUsers.set(e.target.valueAsNumber)}
         />
-      </div>
-
-      <div className="space-y-2 rounded border bg-gray-50 p-4">
-        <Label htmlFor="rating-type">Rating Type</Label>
-
-        <Select
-          value={ratingType}
-          onValueChange={(value) => $ratingType.set(value as IRatingType)}
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Rating Type" />
-          </SelectTrigger>
-
-          <SelectContent id="rating-type">
-            <SelectItem value="words">Words</SelectItem>
-            <SelectItem value="smilies">Smiley-o-Meter</SelectItem>
-            <SelectItem value="thumbs">Thumbs Ups</SelectItem>
-          </SelectContent>
-        </Select>
       </div>
 
       <div className="space-y-4">
@@ -110,9 +89,7 @@ export default function OptionsMenu({}: Props) {
                 </SelectTrigger>
 
                 <SelectContent id="randomize-algorithm">
-                  <SelectItem value="linear-down">
-                    Linear Shift
-                  </SelectItem>
+                  <SelectItem value="linear-down">Linear Shift</SelectItem>
                   <SelectItem value="random">Completely Randomized</SelectItem>
                 </SelectContent>
               </Select>

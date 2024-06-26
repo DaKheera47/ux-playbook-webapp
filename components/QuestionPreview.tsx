@@ -1,8 +1,6 @@
+import { Label } from "@/components/ui/label";
 import { $introductionQuestions, $questions } from "@/stores/pdfOptions";
 import { useStore } from "@nanostores/react";
-
-import { Label } from "@/components/ui/label";
-
 import QuestionEditor from "./QuestionEditor";
 
 type Props = {
@@ -14,6 +12,18 @@ export default function QuestionPreview({ type }: Props) {
   const introductionQuestions = useStore($introductionQuestions);
 
   let questionsToDisplay = type === "base" ? questions : introductionQuestions;
+  let sampleQuestion: IBaseQuestion | IIntroductionQuestion;
+
+  sampleQuestion =
+    type === "base"
+      ? {
+          text: "Add a new base question",
+          description: "Example Description",
+          ratingType: "smilies",
+        }
+      : {
+          text: "Add a new introduction question",
+        };
 
   return (
     <div className="space-y-2">
@@ -34,7 +44,7 @@ export default function QuestionPreview({ type }: Props) {
         <QuestionEditor
           questionType={type}
           type="add"
-          question={{ text: "Add a New Question", ratingType: "smilies" }}
+          question={sampleQuestion}
         />
       </div>
     </div>

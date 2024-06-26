@@ -1,13 +1,4 @@
-import React from "react";
-import {
-  Document,
-  Font,
-  Image,
-  Page,
-  StyleSheet,
-  Text,
-  View,
-} from "@react-pdf/renderer";
+import { StyleSheet, Text, View } from "@react-pdf/renderer";
 
 // Create styles
 const styles = StyleSheet.create({
@@ -28,7 +19,7 @@ const styles = StyleSheet.create({
 });
 
 interface Props {
-  questions: IBaseQuestion[];
+  questions: IIntroductionQuestion[];
 }
 
 // Create Document Component

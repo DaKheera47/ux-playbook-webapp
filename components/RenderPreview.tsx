@@ -1,14 +1,10 @@
 "use client";
 
-import smileyImage from "@/public/smiley-o-meter.jpg";
-import thumbsImage from "@/public/thumbs.jpg";
-import wordsImage from "@/public/words.jpg";
 import {
   $introductionQuestions,
   $isLandscape,
   $layout,
   $questions,
-  $ratingType,
   $showIntroduction,
 } from "@/stores/pdfOptions";
 import { TextQuestion } from "@/templates/TextQuestion";
@@ -23,17 +19,9 @@ type Props = {};
 export default function RenderPreview({}: Props) {
   const baseQuestions = useStore($questions);
   const introductionQuestions = useStore($introductionQuestions);
-
   const isLandscape = useStore($isLandscape);
-  const ratingType = useStore($ratingType);
   const showIntroduction = useStore($showIntroduction);
   const layout = useStore($layout);
-
-  const selectedImage = {
-    smilies: smileyImage,
-    thumbs: thumbsImage,
-    words: wordsImage,
-  }[ratingType];
 
   return (
     <div className="flex h-screen w-3/5 flex-grow flex-col space-y-4 overflow-y-scroll px-4 py-12">
@@ -56,8 +44,7 @@ export default function RenderPreview({}: Props) {
             <TextQuestionTable
               heading="List of questions"
               introductionQuestions={introductionQuestions}
-              questions={baseQuestions}
-              smileyImage={selectedImage.src}
+              baseQuestions={baseQuestions}
               landscape={isLandscape}
               showIntroduction={showIntroduction}
               fileId="1"
@@ -69,10 +56,9 @@ export default function RenderPreview({}: Props) {
           <PDFViewer className="h-[calc(100vh-9rem)] w-full rounded">
             <TextQuestion
               heading="List of questions"
-              questions={baseQuestions}
+              baseQuestions={baseQuestions}
               introductionQuestions={introductionQuestions}
               showIntroduction={showIntroduction}
-              smileyImage={selectedImage.src}
               landscape={isLandscape}
               fileId="1"
             />

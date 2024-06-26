@@ -1,3 +1,6 @@
+import smileyImage from "@/public/smiley-o-meter.jpg";
+import thumbsImage from "@/public/thumbs.jpg";
+import wordsImage from "@/public/words.jpg";
 import {
   Document,
   Image,
@@ -70,10 +73,9 @@ const styles = StyleSheet.create({
 
 interface Props {
   heading: string;
-  questions: IBaseQuestion[];
-  introductionQuestions: IBaseQuestion[];
+  baseQuestions: IBaseQuestion[];
+  introductionQuestions: IIntroductionQuestion[];
   showIntroduction: boolean;
-  smileyImage: string;
   landscape?: boolean;
   fileId: string;
 }
@@ -81,10 +83,9 @@ interface Props {
 // Create Document Component
 const TextQuestion = ({
   heading,
-  questions,
+  baseQuestions,
   introductionQuestions,
   showIntroduction,
-  smileyImage,
   landscape,
   fileId,
 }: Props) => {
@@ -106,11 +107,11 @@ const TextQuestion = ({
         <View style={styles.section}>
           <Text style={styles.heading}>{heading}</Text>
 
-          {questions.length === 0 && (
+          {baseQuestions.length === 0 && (
             <Text style={{ textAlign: "center" }}>No questions added</Text>
           )}
 
-          {questions?.map((question, idx) => {
+          {baseQuestions?.map((question, idx) => {
             return (
               <View key={idx} style={styles.question} wrap={false}>
                 <View>
@@ -118,7 +119,15 @@ const TextQuestion = ({
                   <Text style={styles.description}>{question.description}</Text>
                 </View>
 
-                <Image src={smileyImage} />
+                <Image
+                  src={
+                    question.ratingType === "smilies"
+                      ? smileyImage.src
+                      : question.ratingType === "thumbs"
+                        ? thumbsImage.src
+                        : wordsImage.src
+                  }
+                />
               </View>
             );
           })}

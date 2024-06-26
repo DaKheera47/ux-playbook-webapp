@@ -50,7 +50,6 @@ interface RequestBody {
   baseQuestions: IBaseQuestion[];
   introductionQuestions: IBaseQuestion[];
   numUsers: number;
-  ratingType: IRatingType;
   showIntroduction: boolean;
   layout: ILayout;
   randomizeQuestions: boolean;
@@ -66,7 +65,6 @@ export async function POST(request: Request) {
     baseQuestions,
     introductionQuestions,
     numUsers,
-    ratingType,
     showIntroduction,
     layout,
     randomizeQuestions,
@@ -78,32 +76,20 @@ export async function POST(request: Request) {
     baseQuestions,
     introductionQuestions,
     numUsers,
-    ratingType,
     showIntroduction,
     layout
   );
 
-  // ensure the rating type is valid
-  if (!["smilies", "thumbs", "words"].includes(ratingType)) {
-    return new Response("Invalid rating type", { status: 400 });
-  }
-
   // ensure the randomization algorithm is valid
   if (!["random", "linear-down"].includes(randomizeAlgorithm)) {
+    console.error("Invalid randomization algorithm");
     return new Response("Invalid randomization algorithm", { status: 400 });
   }
 
   // ensure the number of users is valid
   if (numUsers < 1) {
+    console.error("Invalid number of users");
     return new Response("Invalid number of users", { status: 400 });
-  }
-
-  let base64Image;
-
-  try {
-    base64Image = getBase64Image(ratingType);
-  } catch (error: any) {
-    console.error(error.message);
   }
 
   const pdfBuffers = [];
@@ -113,16 +99,20 @@ export async function POST(request: Request) {
       ? performRandomization(baseQuestions, randomizeAlgorithm, i)
       : baseQuestions;
 
+    const base64Data = questions.map((question) =>
+      getBase64Image(question.ratingType)
+    );
+
     const Component = layout === "table" ? TextQuestionTable : TextQuestion;
 
     let pdfBuffer = await renderToBuffer(
       <Component
         heading="List of questions"
+        baseQuestions={questions}
         introductionQuestions={introductionQuestions}
-        questions={questions}
-        smileyImage={base64Image ?? ""}
         landscape={isLandscape}
         showIntroduction={showIntroduction}
+        imageBase64Data={base64Data}
         fileId={`${i + 1}`}
       />
     );

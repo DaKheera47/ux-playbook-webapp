@@ -1,5 +1,6 @@
-import { $showIntroduction } from "@/stores/pdfOptions";
-import { useStore } from "@nanostores/react";
+import smileyImage from "@/public/smiley-o-meter.jpg";
+import thumbsImage from "@/public/thumbs.jpg";
+import wordsImage from "@/public/words.jpg";
 import {
   Document,
   Image,
@@ -60,24 +61,32 @@ const styles = StyleSheet.create({
 
 interface Props {
   heading: string;
-  questions: IBaseQuestion[];
-  introductionQuestions?: IBaseQuestion[];
-  smileyImage: string;
+  baseQuestions: IBaseQuestion[];
+  introductionQuestions?: IIntroductionQuestion[];
   landscape?: boolean;
   showIntroduction?: boolean;
   fileId: string;
+  imageBase64Data?: string[];
 }
 
 // Create Document Component
 const TextQuestionTable = ({
   heading,
-  questions,
+  baseQuestions,
   introductionQuestions = [],
-  smileyImage,
   landscape,
   showIntroduction = true,
   fileId,
+  imageBase64Data,
 }: Props) => {
+  const getImageSrc = (question: IBaseQuestion) => {
+    return question.ratingType === "smilies"
+      ? smileyImage.src
+      : question.ratingType === "thumbs"
+        ? thumbsImage.src
+        : wordsImage.src;
+  };
+
   return (
     <Document>
       <Page
@@ -94,13 +103,13 @@ const TextQuestionTable = ({
         )}
 
         <View style={styles.section}>
-          {questions.length === 0 ? (
+          {baseQuestions.length === 0 ? (
             <Text style={{ textAlign: "center" }}>No questions added</Text>
           ) : (
             <>
               <Text style={styles.heading}>{heading}</Text>
 
-              {questions?.map((question, idx) => (
+              {baseQuestions?.map((question, idx) => (
                 <View
                   key={idx}
                   wrap={false}
@@ -108,7 +117,8 @@ const TextQuestionTable = ({
                     styles.question,
                     {
                       // border width only if last question to avoid double border
-                      borderBottomWidth: idx === questions.length - 1 ? 1 : 0,
+                      borderBottomWidth:
+                        idx === baseQuestions.length - 1 ? 1 : 0,
                     },
                   ]}
                 >
@@ -130,7 +140,11 @@ const TextQuestionTable = ({
                         borderLeftStyle: "solid",
                       },
                     ]}
-                    src={smileyImage}
+                    src={
+                      imageBase64Data
+                        ? imageBase64Data[idx]
+                        : getImageSrc(question)
+                    }
                   />
                 </View>
               ))}
