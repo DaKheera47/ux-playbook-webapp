@@ -100,9 +100,41 @@ export async function POST(request: Request) {
   };
 
   for (let i = 0; i < numUsers; i++) {
-    const questions = randomizeQuestions
-      ? performRandomization(baseQuestions, randomizeAlgorithm, i)
-      : baseQuestions;
+    let questions = [...baseQuestions];
+
+    if (randomizeQuestions) {
+      const randomizableQuestions = questions.filter((q) => q.randomize);
+
+      const randomizedQuestions = performRandomization(
+        randomizableQuestions,
+        randomizeAlgorithm,
+        i
+      );
+
+      // read each question, and replace only the
+      // randomized ones, leaving the "locked" ones as is
+      questions = questions.map((q) =>
+        !q.randomize
+          ? q
+          : randomizedQuestions.shift() ??
+            // this should never happen, but we need to satisfy the type checker
+            // because unshift() can return undefined
+            ({
+              text: "Invalid question",
+              ratingType: "smilies",
+            } as IBaseQuestion)
+      );
+
+      // check if there is any invalid question (should never happen)
+      // if so return an error
+      for (const q of questions) {
+        if (q.text === "Invalid question") {
+          console.error("Invalid question event in randomization");
+
+          return new Response("Invalid question", { status: 500 });
+        }
+      }
+    }
 
     const base64Data = questions.map((question) => {
       return base64Buffer[question.ratingType];
