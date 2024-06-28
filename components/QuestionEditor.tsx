@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { $introductionQuestions, $baseQuestions } from "@/stores/pdfOptions";
+import { $baseQuestions, $introductionQuestions } from "@/stores/pdfOptions";
 import { useStore } from "@nanostores/react";
 
 import { cn, displayRatingType, isBaseQuestion } from "@/lib/utils";
@@ -23,6 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 
 type Props = {
   question: IBaseQuestion | IIntroductionQuestion;
@@ -48,6 +49,7 @@ export default function QuestionEditor({
         text: question.text,
         description: question.description,
         ratingType: question.ratingType,
+        randomizationLocked: question.randomize,
       }
     : {
         text: question.text,
@@ -89,7 +91,8 @@ export default function QuestionEditor({
     return (
       q.text === question.text &&
       q.ratingType === question.ratingType &&
-      q.description === question.description
+      q.description === question.description &&
+      q.randomize === question.randomize
     );
   };
 
@@ -107,20 +110,35 @@ export default function QuestionEditor({
       <DialogTrigger asChild className="w-full justify-start bg-white">
         <Button
           variant={type === "add" ? "link" : "outline"}
-          className="h-full w-full flex-col items-start gap-y-1 text-left"
+          className="h-full w-full flex-col items-start text-left"
         >
-          {question.text}
+          <span className="text-sm">{question.text}</span>
 
           {type !== "add" && isBaseQuestion(question) && (
-            <>
-              <span className="text-xs text-gray-500">
-                {question?.description}
-              </span>
+            <span className="text-xs text-gray-500">
+              {question?.description}
+            </span>
+          )}
 
-              <span className="text-xs text-gray-500">
-                {displayRatingType(question?.ratingType)}
-              </span>
-            </>
+          {type !== "add" && isBaseQuestion(question) && (
+            <div className="mt-2 flex flex-col text-gray-700">
+              <ul className="list-inside list-disc">
+                <li>
+                  <span className="text-xs lowercase text-gray-500">
+                    Uses the {displayRatingType(question?.ratingType)} rating
+                    system
+                  </span>
+                </li>
+
+                {question.randomize && (
+                  <li>
+                    <span className="text-xs lowercase text-gray-500">
+                      Will be randomized when generating PDF Set
+                    </span>
+                  </li>
+                )}
+              </ul>
+            </div>
           )}
         </Button>
       </DialogTrigger>
@@ -164,6 +182,7 @@ export default function QuestionEditor({
                 <Label htmlFor="description" className="text-right">
                   Description
                 </Label>
+
                 <Input
                   id="description"
                   value={editingQuestion?.description ?? ""}
@@ -173,14 +192,17 @@ export default function QuestionEditor({
                       text: editingQuestion?.text ?? "",
                       description: e.target.value,
                       ratingType: editingQuestion?.ratingType,
+                      randomize: editingQuestion?.randomize,
                     })
                   }
                 />
               </div>
+
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="rating-type" className="text-right">
                   Rating Type
                 </Label>
+
                 <Select
                   value={editingQuestion?.ratingType}
                   onValueChange={(value) =>
@@ -188,18 +210,39 @@ export default function QuestionEditor({
                       text: editingQuestion?.text ?? "",
                       description: editingQuestion?.description,
                       ratingType: value as IRatingType,
+                      randomize: editingQuestion?.randomize,
                     })
                   }
                 >
                   <SelectTrigger className="col-span-3">
                     <SelectValue placeholder="Rating Type" />
                   </SelectTrigger>
+
                   <SelectContent id="rating-type">
                     <SelectItem value="words">Words</SelectItem>
                     <SelectItem value="smilies">Smiley-o-Meter</SelectItem>
                     <SelectItem value="thumbs">Thumbs Ups</SelectItem>
                   </SelectContent>
                 </Select>
+              </div>
+
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="is-random-locked" className="text-right">
+                  Randomize
+                </Label>
+
+                <Switch
+                  className="col-span-3"
+                  checked={editingQuestion?.randomize}
+                  onCheckedChange={(value) =>
+                    setEditingQuestion({
+                      text: editingQuestion?.text ?? "",
+                      description: editingQuestion?.description,
+                      ratingType: editingQuestion?.ratingType,
+                      randomize: value,
+                    })
+                  }
+                />
               </div>
             </>
           )}

@@ -6,7 +6,7 @@ export const $baseQuestions = atom<IBaseQuestion[]>([
     text: "Example Base Question",
     description: "Base Example Description",
     ratingType: "smilies",
-    randomizationLocked: false,
+    randomize: false,
   },
 ]);
 

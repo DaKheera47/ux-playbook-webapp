@@ -2,6 +2,7 @@ interface IBaseQuestion {
   text: string;
   description?: string;
   ratingType: IRatingType;
+  randomize: boolean;
 }
 
 interface IIntroductionQuestion {
