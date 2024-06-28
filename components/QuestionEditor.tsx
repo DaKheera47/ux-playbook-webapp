@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { $introductionQuestions, $questions } from "@/stores/pdfOptions";
+import { $introductionQuestions, $baseQuestions } from "@/stores/pdfOptions";
 import { useStore } from "@nanostores/react";
 
 import { cn, displayRatingType, isBaseQuestion } from "@/lib/utils";
@@ -35,11 +35,11 @@ export default function QuestionEditor({
   type,
   questionType,
 }: Props) {
-  const baseQuestions = useStore($questions);
+  const baseQuestions = useStore($baseQuestions);
   const introductionQuestions = useStore($introductionQuestions);
 
   const $questionsList =
-    questionType === "base" ? $questions : $introductionQuestions;
+    questionType === "base" ? $baseQuestions : $introductionQuestions;
   const questions =
     questionType === "base" ? baseQuestions : introductionQuestions;
 

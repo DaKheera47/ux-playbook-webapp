@@ -5,7 +5,7 @@ import {
   $isLandscape,
   $layout,
   $numberOfUsers,
-  $questions,
+  $baseQuestions,
   $randomizeAlgorithm,
   $randomizeQuestions,
   $showIntroduction,
@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 type Props = {};
 
 export default function GeneratePDFSet({}: Props) {
-  const baseQuestions = useStore($questions);
+  const baseQuestions = useStore($baseQuestions);
   const introductionQuestions = useStore($introductionQuestions);
 
   const numUsers = useStore($numberOfUsers);

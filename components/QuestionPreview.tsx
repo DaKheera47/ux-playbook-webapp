@@ -1,5 +1,5 @@
 import { Label } from "@/components/ui/label";
-import { $introductionQuestions, $questions } from "@/stores/pdfOptions";
+import { $introductionQuestions, $baseQuestions } from "@/stores/pdfOptions";
 import { useStore } from "@nanostores/react";
 import QuestionEditor from "./QuestionEditor";
 
@@ -8,7 +8,7 @@ type Props = {
 };
 
 export default function QuestionPreview({ type }: Props) {
-  const questions = useStore($questions);
+  const questions = useStore($baseQuestions);
   const introductionQuestions = useStore($introductionQuestions);
 
   let questionsToDisplay = type === "base" ? questions : introductionQuestions;

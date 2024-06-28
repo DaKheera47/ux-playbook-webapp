@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  $baseQuestions,
   $isLandscape,
   $numberOfUsers,
   $randomizeAlgorithm,
@@ -73,7 +74,7 @@ export default function OptionsMenu({}: Props) {
           </div>
 
           {randomizeQuestions && (
-            <div className="space-y-0">
+            <div className="space-y-1">
               <Label htmlFor="randomize-algorithm">
                 Randomization Algorithm
               </Label>

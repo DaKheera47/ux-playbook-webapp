@@ -4,7 +4,7 @@ import {
   $introductionQuestions,
   $isLandscape,
   $layout,
-  $questions,
+  $baseQuestions,
   $showIntroduction,
 } from "@/stores/pdfOptions";
 import { TextQuestion } from "@/templates/TextQuestion";
@@ -17,7 +17,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 type Props = {};
 
 export default function RenderPreview({}: Props) {
-  const baseQuestions = useStore($questions);
+  const baseQuestions = useStore($baseQuestions);
   const introductionQuestions = useStore($introductionQuestions);
   const isLandscape = useStore($isLandscape);
   const showIntroduction = useStore($showIntroduction);

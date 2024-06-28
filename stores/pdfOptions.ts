@@ -1,11 +1,12 @@
 // store/pdfOptions.ts
 import { atom } from "nanostores";
 
-export const $questions = atom<IBaseQuestion[]>([
+export const $baseQuestions = atom<IBaseQuestion[]>([
   {
     text: "Example Base Question",
     description: "Base Example Description",
     ratingType: "smilies",
+    randomizationLocked: false,
   },
 ]);
 
